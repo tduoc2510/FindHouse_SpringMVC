@@ -1,0 +1,39 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package controllers.repository;
+
+/**
+ *
+ * @author Thanh Duoc1
+ */
+
+import java.math.BigDecimal;
+import java.util.List;
+import model.entity.BoardingHouse;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface BoardingHouseRepository extends JpaRepository<BoardingHouse, Integer> {
+@Query("SELECT bh FROM BoardingHouse bh " +
+       "LEFT JOIN bh.rooms r " +
+       "LEFT JOIN Review rv ON rv.room = r " +
+       "WHERE (:name IS NULL OR bh.name LIKE %:name%) " +
+       "AND (:address IS NULL OR bh.address LIKE %:address%) " +
+       "AND (:minPrice IS NULL OR r.price >= :minPrice) " +
+       "AND (:maxPrice IS NULL OR r.price <= :maxPrice) " +
+       "GROUP BY bh.id, bh.name, bh.address, bh.description, bh.createdAt, bh.updatedAt, bh.owner")
+List<BoardingHouse> searchBoardingHouses(
+    @Param("name") String name,
+    @Param("address") String address,
+    @Param("minPrice") BigDecimal minPrice,
+    @Param("maxPrice") BigDecimal maxPrice
+);
+
+
+}
+
