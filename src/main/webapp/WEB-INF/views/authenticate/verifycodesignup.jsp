@@ -1,22 +1,16 @@
 <%-- 
-    Document   : login
-    Created on : Mar 2, 2025, 3:26:24 PM
-    Author     : Thanh Duoc
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%-- 
     Document   : signUp
     Created on : Mar 2, 2025, 3:19:32 PM
     Author     : Thanh Duoc
 --%>
 
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
     <!-- Mirrored from stackbros.in/bookinga/landing/sign-up.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 14 Jan 2025 15:03:39 GMT -->
     <%@include file="../include/head.jsp" %>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script src="${pageContext.request.contextPath}/assets/js/sweetalert.min.js"></script>
     <script>
@@ -62,33 +56,25 @@
                                         <div class="p-4 p-sm-6">
 
                                             <!-- Title -->
-                                            <h1 class="mb-2 h3">Login</h1>
-                                            <p class="mb-0">Don't have an account?<a href="/signup">Sign Up</a></p>
-
-                                            <!-- Form START -->
+                                            <h1 class="mb-2 h3">Create new account</h1>
+                                            <p class="mb-0">Already a member?<a href="/login">Login</a></p>
 
 
-                                            <form class="mt-4 text-start" action="${pageContext.request.contextPath}/login" method="post">
-                                                <!-- Email -->
+
+                                            <!-- Verification Form -->
+                                            <form class="mt-4 text-start" action="${pageContext.request.contextPath}/signup" method="post">
+                                                <!-- Verification Code -->
                                                 <div class="mb-3">
-                                                    <label class="form-label">Enter email id</label>
-                                                    <input type="email" name="email" class="form-control" required>
+                                                    <label class="form-label">Nhập mã xác thực</label>
+                                                    <input type="text" name="verificationCode" class="form-control" required>
                                                 </div>
 
-                                                <!-- Password -->
-                                                <div class="mb-3 position-relative">
-                                                    <label class="form-label">Enter password</label>
-                                                    <input type="password" name="password" class="form-control fakepassword" id="psw-input" required>
-                                                    <span class="position-absolute top-50 end-0 translate-middle-y p-0 mt-3">
-                                                        <i class="fakepasswordicon fas fa-eye-slash cursor-pointer p-2"></i>
-                                                    </span>
-                                                </div>
-
-                                                <!-- Button -->
+                                                <!-- Submit Button -->
                                                 <div>
-                                                    <button type="submit" class="btn btn-primary w-100 mb-0">Sign up</button>
+                                                    <button type="submit" class="btn btn-primary w-100 mb-0">Xác thực</button>
                                                 </div>
                                             </form>
+
 
                                             <!-- Form END -->
                                         </div>		

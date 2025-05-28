@@ -175,7 +175,7 @@
                                                                                     <hr>
                                                                                     <li class="list-group-item d-flex align-items-center mb-2">
                                                                                         <i class="fa-solid fa-hotel text-success me-2"></i>
-                                                                                        <span class="h6 fw-light mb-0">Giá: <strong>${booking.room.price} VND/tháng</strong></span>
+                                                                                        <span class="h6 fw-light mb-0">Giá: <strong><fmt:formatNumber value="${booking.room.price}"/> VND/tháng</strong></span>
                                                                                     </li>
                                                                                 </div>
 
@@ -186,20 +186,42 @@
                                                                                         <!-- Nội dung thống kê hợp đồng ở đây -->
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="mt-4 d-flex align-items-center">
-                                                                                    <input class="form-check-input me-2" type="checkbox" id="confirmCheckbox" onchange="togglePaymentButton()">
-                                                                                    <label class="form-check-label h6 fw-light mb-0" for="confirmCheckbox">
-                                                                                        Tôi đồng ý với các điều khoản hợp đồng
+                                                                                <div class="form-check mb-3">
+                                                                                    <input class="form-check-input" type="checkbox" id="confirmPay" onchange="document.getElementById('payBtn').disabled = !this.checked">
+                                                                                    <label class="form-check-label" for="confirmPay">
+                                                                                        Tôi đồng ý với các điều khoản thanh toán
                                                                                     </label>
                                                                                 </div>
 
 
-                                                                                <form action="${pageContext.request.contextPath}/booking/update-status" method="post">
-                                                                                    <input type="hidden" name="status" value="confirm3">
-                                                                                    <input type="hidden" name="requestId" value="${booking.id}">
 
-                                                                                    <button id="paymentButton" type="submit" class="btn btn-primary mt-3 w-100" disabled>Xác nhận thanh toán</button>
+                                                                                
+                                                                                <form action="${pageContext.request.contextPath}/payment" method="post">
+                                                                                    <!-- Gửi booking.id ẩn -->
+                                                                                    <input type="hidden" name="requestId" value="${booking.id}" />
+
+                                                                                    <!-- Số tiền thanh toán -->
+                                                                                    <label for="amount" class="form-label">Số tiền (VNĐ):</label>
+                                                                                    <input type="number" id="amount" name="amount"
+                                                                                           class="form-control mb-3" value="${booking.room.price}" readonly required>
+
+                                                                                    <!-- Nội dung thanh toán -->
+                                                                                    <label for="orderInfo" class="form-label">Nội dung thanh toán:</label>
+                                                                                    <input type="text" id="orderInfo" name="orderInfo"
+                                                                                           class="form-control mb-3" value="Thanh toán phòng: ${booking.room.title}" required>
+
+                                                                                    <!-- Ngôn ngữ -->
+                                                                                    <label for="language" class="form-label">Ngôn ngữ:</label>
+                                                                                    <select id="language" name="language" class="form-select mb-3">
+                                                                                        <option value="vn" selected>Tiếng Việt</option>
+                                                                                        <option value="en">English</option>
+                                                                                    </select>
+
+                                                                                    <!-- Nút submit -->
+                                                                                    <input type="submit" id="payBtn" value="Thanh toán" class="btn btn-primary w-100" disabled>
                                                                                 </form>
+
+
 
                                                                             </div>
                                                                             <!-- Card body END -->

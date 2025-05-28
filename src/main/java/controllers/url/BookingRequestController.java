@@ -9,6 +9,7 @@ package controllers.url;
  * @author Thanh Duoc
  */
 import controllers.service.BookingRequestService;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,18 +22,24 @@ public class BookingRequestController {
     @Autowired
     private BookingRequestService bookingRequestService;
 
-    @PostMapping("/update-status")
-    public String updateStatus(@RequestParam("requestId") Integer requestId,
-            @RequestParam("status") String status,
-            @RequestParam(value = "reason", required = false) String reason,
-            RedirectAttributes redirectAttributes) {
-        try {
-            bookingRequestService.updateBookingStatus(requestId, status, reason);
-            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật trạng thái thành công!");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Có lỗi xảy ra khi cập nhật trạng thái.");
+    @GetMapping("/payment_return")
+    public String handleVnpayReturn(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        String responseCode = request.getParameter("vnp_ResponseCode");
+        String transactionStatus = request.getParameter("vnp_TransactionStatus");
+        String requestId = request.getParameter("vnp_TxnRef");
+
+        boolean success = "00".equals(responseCode) && "00".equals(transactionStatus);
+
+        if (success) {
+            int bookingId = Integer.parseInt(requestId);
+            bookingRequestService.updateBookingStatus(bookingId, "confirm3", "Thanh toán thành công qua VNPAY");
+            redirectAttributes.addFlashAttribute("successMessage", "Thanh toán thành công!");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Thanh toán thất bại hoặc bị huỷ.");
         }
-        return "redirect:/user/profile";
+
+        // Trả người dùng về trang danh sách đặt phòng
+        return "redirect:/user/booking";
     }
 
 }

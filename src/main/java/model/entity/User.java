@@ -10,26 +10,27 @@ import org.hibernate.annotations.Nationalized;
 import java.time.Instant;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "Users")
 public class User {
 
     @Id
-    @Column(name = "user_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id", nullable = false)
     private Integer id;
 
     @Nationalized
-    @Column(name = "username", nullable = false, length = 50)
+    @Column(name = "username", nullable = false, length = 50, unique = true)
     private String username;
 
-    @Nationalized
     @Column(name = "password", nullable = false)
     private String password;
 
     @Nationalized
-    @Column(name = "email", nullable = false, length = 100)
+    @Column(name = "email", nullable = false, length = 100, unique = true)
     private String email;
 
     @Nationalized
@@ -40,15 +41,20 @@ public class User {
     @Column(name = "phone_number", length = 15)
     private String phoneNumber;
 
-    @Nationalized
+    @Column(name = "cccd", length = 20)
+    private String cccd;
+
     @Column(name = "role", nullable = false, length = 50)
     private String role;
 
-    @ColumnDefault("getdate()")
-    @Column(name = "created_at")
+    @Column(name = "verified")
+    private Boolean verified = false;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
-    @ColumnDefault("getdate()")
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private Instant updatedAt;
 
@@ -100,12 +106,28 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getCccd() {
+        return cccd;
+    }
+
+    public void setCccd(String cccd) {
+        this.cccd = cccd;
+    }
+
     public String getRole() {
         return role;
     }
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Boolean getVerified() {
+        return verified;
+    }
+
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
     }
 
     public Instant getCreatedAt() {
@@ -123,5 +145,5 @@ public class User {
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
-
+    
 }

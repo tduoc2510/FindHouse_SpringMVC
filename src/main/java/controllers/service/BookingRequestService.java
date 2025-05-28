@@ -29,7 +29,7 @@ public class BookingRequestService {
     }
 
     public List<BookingRequest> getRequestsByOwnerId(Integer ownerId) {
-        return bookingRequestRepository.findByRoom_House_Owner_Id(ownerId);
+        return bookingRequestRepository.findByRoom_House_Profile_Owner_Id(ownerId);
     }
 
     public boolean updateBookingStatus(Integer requestId, String newStatus, String reason) {
@@ -48,8 +48,6 @@ public class BookingRequestService {
             }
 
             // Cập nhật thời gian cập nhật
-            booking.setUpdatedAt(new Date());
-
             bookingRequestRepository.save(booking);
             return true;
         }

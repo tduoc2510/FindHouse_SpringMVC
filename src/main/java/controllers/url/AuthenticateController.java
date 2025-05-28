@@ -4,7 +4,10 @@
  */
 package controllers.url;
 
+import controllers.service.AuthenticateService;
 import controllers.service.UserService;
+import controllers.util.SessionUtil;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import model.entity.User;
@@ -26,34 +29,98 @@ public class AuthenticateController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthenticateService authenticateService;
+
     @GetMapping("/signup")
     public String signup(Model model) {
         return "authenticate/signUp";
     }
 
-    @PostMapping("/signup")
-    public String registerUser(
-            @RequestParam("email") String email,
-            @RequestParam("username") String username,
-            @RequestParam("password") String password,
-            @RequestParam("confirmPassword") String confirmPassword,
-            Model model) {
+    @GetMapping("/verifycodesignup")
+    public String verifycodesignupget(Model model) {
+        return "authenticate/verifycodesignup";
+    }
 
-        // Kiểm tra mật khẩu xác nhận
+    @PostMapping("/verifycodesignup")
+    public String verifycodesignup(@RequestParam String email,
+            @RequestParam String username,
+            @RequestParam String password,
+            @RequestParam String confirmPassword,
+            @RequestParam String role,
+            @RequestParam(required = false) String fullName,
+            @RequestParam(required = false) String phoneNumber,
+            @RequestParam(required = false) String cccd,
+            Model model,
+            HttpSession session) throws MessagingException {
+        SessionUtil.clearMessages(session); // Xoá trước khi xử lý mới
+
         if (!password.equals(confirmPassword)) {
-            model.addAttribute("error", "Mật khẩu xác nhận không khớp!");
-            return "authenticate/signUp"; // Quay lại trang đăng ký nếu có lỗi
+            session.setAttribute("message", "Mật khẩu không khớp!");
+            session.setAttribute("messageType", "error");
+            return "redirect:/signup";
         }
 
-        // Gọi service để lưu user vào database
-        boolean success = userService.registerUser(email, username, password);
-
-        if (!success) {
-            model.addAttribute("error", "Đăng ký thất bại, email hoặc username đã tồn tại!");
-            return "authenticate/signUp";
+        User existing = userService.findByEmail(email);
+        if (existing != null) {
+            session.setAttribute("message", "Email đã tồn tại trong hệ thống!");
+            session.setAttribute("messageType", "error");
+            return "redirect:/signup";
         }
 
-        return "redirect:/login"; // Chuyển hướng đến trang đăng nhập sau khi đăng ký thành công
+        // Gửi mã xác minh OTP
+        String verificationCode = authenticateService.sendVerificationCodeSignup(email);
+
+        // Lưu thông tin vào session
+        session.setAttribute("email", email);
+        session.setAttribute("username", username);
+        session.setAttribute("password", password);
+        session.setAttribute("role", role);
+        session.setAttribute("fullName", fullName);
+        session.setAttribute("phoneNumber", phoneNumber);
+        session.setAttribute("cccd", cccd);
+        session.setAttribute("verificationCode", verificationCode);
+
+        return "redirect:/verifycodesignup";
+    }
+
+    @PostMapping("/signup")
+    public String confirmSignup(@RequestParam String verificationCode, HttpSession session) {
+        String sessionCode = (String) session.getAttribute("verificationCode");
+        SessionUtil.clearMessages(session); // Xoá trước khi xử lý mới
+
+        // Kiểm tra mã xác thực
+        if (sessionCode == null || !sessionCode.equals(verificationCode)) {
+            session.setAttribute("message", "Mã xác thực không đúng!");
+            session.setAttribute("messageType", "error");
+            return "redirect:/verifycodesignup";
+        }
+
+        // Lấy dữ liệu người dùng từ session
+        String email = (String) session.getAttribute("email");
+        String username = (String) session.getAttribute("username");
+        String password = (String) session.getAttribute("password");
+        String role = (String) session.getAttribute("role");
+        String fullName = (String) session.getAttribute("fullName");
+        String phoneNumber = (String) session.getAttribute("phoneNumber");
+        String cccd = (String) session.getAttribute("cccd");
+
+        // Đăng ký người dùng
+        userService.registerUser(email, username, password, role, fullName, phoneNumber, cccd);
+
+        // Xóa session tạm
+        session.removeAttribute("verificationCode");
+        session.removeAttribute("email");
+        session.removeAttribute("username");
+        session.removeAttribute("password");
+        session.removeAttribute("role");
+        session.removeAttribute("fullName");
+        session.removeAttribute("phoneNumber");
+        session.removeAttribute("cccd");
+
+        session.setAttribute("message", "Đăng ký thành công! Vui lòng đăng nhập.");
+        session.setAttribute("messageType", "success");
+        return "redirect:/login";
     }
 
     @GetMapping("/login")
@@ -66,14 +133,17 @@ public class AuthenticateController {
             @RequestParam String password,
             HttpSession session,
             Model model) {
+        SessionUtil.clearMessages(session); // Xoá trước khi xử lý mới
 
-        User user = userService.validateUser(email, password);
+        User user = authenticateService.login(email, password);
 
         if (user != null) {
+
             session.setAttribute("USER", user);
-            return "redirect:/home"; // Chuyển hướng sau khi đăng nhập thành công
+            return "redirect:/home";
         } else {
-            model.addAttribute("error", "Email hoặc mật khẩu không chính xác!");
+            session.setAttribute("message", "Email hoặc mật khẩu không chính xác!");
+            session.setAttribute("messageType", "error");
             return "redirect:/login";
         }
     }

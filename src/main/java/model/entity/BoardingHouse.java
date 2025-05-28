@@ -1,9 +1,9 @@
 package model.entity;
 
 import javax.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Nationalized;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,13 +14,13 @@ import java.util.List;
 public class BoardingHouse {
 
     @Id
-    @Column(name = "house_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "house_id", nullable = false)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "owner_id", nullable = false)
-    private model.entity.User owner;
+    @JoinColumn(name = "profile_id", nullable = false)
+    private OwnerProfile profile;
 
     @OneToMany(mappedBy = "house", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Room> rooms = new ArrayList<>();
@@ -33,19 +33,24 @@ public class BoardingHouse {
     @Column(name = "address", nullable = false)
     private String address;
 
+
+
     @Nationalized
-    @Lob
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "NVARCHAR(MAX)")
     private String description;
 
-    @ColumnDefault("getdate()")
-    @Column(name = "created_at")
+    @Column(name = "max_room_count", nullable = false)
+    private Integer maxRoomCount;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
-    @ColumnDefault("getdate()")
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    // Getter/Setter nếu cần
     public Integer getId() {
         return id;
     }
@@ -54,12 +59,20 @@ public class BoardingHouse {
         this.id = id;
     }
 
-    public model.entity.User getOwner() {
-        return owner;
+    public OwnerProfile getProfile() {
+        return profile;
     }
 
-    public void setOwner(model.entity.User owner) {
-        this.owner = owner;
+    public void setProfile(OwnerProfile profile) {
+        this.profile = profile;
+    }
+
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
     }
 
     public String getName() {
@@ -86,6 +99,14 @@ public class BoardingHouse {
         this.description = description;
     }
 
+    public Integer getMaxRoomCount() {
+        return maxRoomCount;
+    }
+
+    public void setMaxRoomCount(Integer maxRoomCount) {
+        this.maxRoomCount = maxRoomCount;
+    }
+
     public Instant getCreatedAt() {
         return createdAt;
     }
@@ -102,16 +123,8 @@ public class BoardingHouse {
         this.updatedAt = updatedAt;
     }
 
-    public List<Room> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(List<Room> rooms) {
-        this.rooms = rooms;
-    }
-
-    public Date getCreatedAtAsDate() {
-        return Date.from(createdAt);
+    public Date getCreatedAtDate() {
+        return createdAt != null ? Date.from(createdAt) : null;
     }
 
 }

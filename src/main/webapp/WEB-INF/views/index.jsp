@@ -32,7 +32,7 @@ About END -->
 
             <!-- =======================
 Featured Hotels START -->
-            <%@include file="include/index.clude/featuredHotel.jsp" %>
+            <%--<%@include file="include/index.clude/featuredHotel.jsp" %>--%>
             <!-- =======================
 Featured Hotels END -->
 

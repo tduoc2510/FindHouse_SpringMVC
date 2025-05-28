@@ -6,21 +6,22 @@ import org.hibernate.annotations.Nationalized;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "Tenants")
 public class Tenant {
 
     @Id
-    @Column(name = "tenant_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "tenant_id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private model.entity.User user;
+    private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
 
@@ -31,12 +32,11 @@ public class Tenant {
     private LocalDate rentEnd;
 
     @Nationalized
-    @ColumnDefault("'active'")
-    @Column(name = "status", length = 50)
-    private String status;
+    @Column(name = "status", length = 50, nullable = false)
+    private String status = "active"; // ✅ mặc định trong code Java
 
-    @ColumnDefault("getdate()")
-    @Column(name = "created_at")
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
     public Integer getId() {
@@ -47,11 +47,11 @@ public class Tenant {
         this.id = id;
     }
 
-    public model.entity.User getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(model.entity.User user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -94,5 +94,7 @@ public class Tenant {
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
+
+    
 
 }

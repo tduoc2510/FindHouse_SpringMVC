@@ -20,7 +20,6 @@ public interface BookingRequestRepository extends JpaRepository<BookingRequest, 
 
     List<BookingRequest> findByUser_Id(Integer userId);  // ✅ Lấy danh sách BookingRequest theo userId
 
-       List<BookingRequest> findByRoom_House_Owner_Id(Integer ownerId);
-
+    List<BookingRequest> findByRoom_House_Profile_Owner_Id(Integer ownerId);
 
 }

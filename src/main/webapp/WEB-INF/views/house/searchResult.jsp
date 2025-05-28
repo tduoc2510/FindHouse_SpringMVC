@@ -58,12 +58,22 @@
                                                 <div class="row g-0">
                                                     <!-- Card img -->
                                                     <div class="col-md-5 position-relative">
+
+
+
                                                         <!-- Slider START -->
                                                         <div class="tiny-slider arrow-round arrow-xs arrow-dark overflow-hidden rounded-2">
                                                             <div class="tiny-slider-inner" data-autoplay="false" data-arrow="true" data-dots="false" data-items="1">
+                                                                <!-- Image item -->
                                                                 <div><img src="${pageContext.request.contextPath}/assets/images/category/hotel/4by3/04.jpg" alt="Card image"></div>
+
+                                                                <!-- Image item -->
                                                                 <div><img src="${pageContext.request.contextPath}/assets/images/category/hotel/4by3/02.jpg" alt="Card image"></div>
+
+                                                                <!-- Image item -->
                                                                 <div><img src="${pageContext.request.contextPath}/assets/images/category/hotel/4by3/03.jpg" alt="Card image"></div>
+
+                                                                <!-- Image item -->
                                                                 <div><img src="${pageContext.request.contextPath}/assets/images/category/hotel/4by3/01.jpg" alt="Card image"></div>
                                                             </div>
                                                         </div>
@@ -73,14 +83,15 @@
                                                     <!-- Card body -->
                                                     <div class="col-md-7">
                                                         <div class="card-body py-md-2 d-flex flex-column h-100 position-relative">
-                                                            <!-- Title -->
+
                                                             <ul class="list-inline mb-0">
                                                                 <li class="list-inline-item me-0 small">${houseRatings[house.id]} <i class="fa-solid fa-star text-warning"></i></li>
 
                                                             </ul>
+
+                                                            <!-- Title -->
                                                             <h5 class="card-title mb-1"><a href="/boarding-house/${house.id}">${house.name}</a></h5>
                                                             <small><i class="bi bi-geo-alt me-2"></i>${house.address}</small>
-
                                                             <!-- Amenities -->
                                                             <ul class="nav nav-divider mt-3">
                                                                 <li class="nav-item">Air Conditioning</li>
@@ -91,16 +102,13 @@
 
                                                             <!-- List -->
                                                             <ul class="list-group list-group-borderless small mb-0 mt-2">
-                                                                <li class="list-group-item d-flex text-success p-0">
-                                                                    <i class="bi bi-patch-check-fill me-2"></i>${house.owner.phoneNumber}
-                                                                </li>
-                                                                <li class="list-group-item d-flex text-success p-0">
-                                                                    <i class="bi bi-patch-check-fill me-2"></i>${house.owner.email}
-                                                                </li>
+
                                                             </ul>
 
                                                             <!-- Price and Button -->
                                                             <div class="d-sm-flex justify-content-sm-between align-items-center mt-3 mt-md-auto">
+
+                                                                <!-- Price -->
                                                                 <div class="mt-3 mt-sm-0">
                                                                     <a href="/boarding-house/${house.id}" class="btn btn-sm btn-dark mb-0 w-100">Xem chi tiết</a>    
                                                                 </div>                  

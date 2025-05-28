@@ -163,8 +163,10 @@
 
 
                                     </div>
+
                                     <!-- Card body END -->
                                 </div>
+
                                 <!-- About hotel START -->
 
                                 <!-- Amenities START -->
@@ -218,23 +220,39 @@
 
                                                                 <!-- Title -->
                                                                 <h5 class="card-title"><a href="#">${room.title}</a></h5>
+                                                                    <c:choose>
+                                                                        <c:when test="${room.status eq 'available'}">
+                                                                        <button class="btn btn-success">Có sẵn</button>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <button class="btn btn-danger">Không có sẵn</button>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+
+
 
                                                                 <!-- Amenities -->
                                                                 <ul class="nav nav-divider mb-2">
-                                                                    <li class="nav-item">${room.amenities}</li>
-                                                              
+                                                                    <c:forEach var="amenity" items="${room.amenities}">
+                                                                        <li class="nav-item">${amenity.name}</li>
+                                                                        </c:forEach>
                                                                 </ul>
+
 
                                                                 <!-- Price and Button -->
                                                                 <div class="d-sm-flex justify-content-sm-between align-items-center mt-auto">
                                                                     <!-- Button -->
                                                                     <div class="d-flex align-items-center">
-                                                                        <h5 class="fw-bold mb-0 me-1"><fmt:formatNumber value="${room.price}" type="currency" currencySymbol="₫" groupingUsed="true"/></h5>
+                                                                        <h5 class="fw-bold mb-0 me-1"> <fmt:formatNumber value="${room.price}" currencySymbol="₫" groupingUsed="true"/> VND/Tháng</h5>
                                                                     </div>
+
                                                                     <!-- Price -->
-                                                                    <div class="mt-3 mt-sm-0">
-                                                                        <a href="#" class="btn btn-sm btn-primary mb-0">Select Room</a>    
-                                                                    </div>                  
+                                                                    <c:if test="${room.status eq 'available'}">
+                                                                        <div class="mt-3 mt-sm-0">
+                                                                            <a href="#" class="btn btn-sm btn-primary mb-0">Select Room</a>    
+                                                                        </div>            
+                                                                    </c:if>
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -329,7 +347,7 @@
                                 <div class="card bg-transparent">
                                     <!-- Card header -->
                                     <div class="card-header border-bottom bg-transparent px-0 pt-0">
-                                        <h3 class="card-title mb-0">Customer Review</h3>
+                                        <h3 class="card-title mb-0">Customer Review1</h3>
                                     </div>
 
                                     <!-- Card body START -->
@@ -494,8 +512,8 @@
                                                             <h6 class="me-3 mb-0">${review.room.title}: ${review.room.description}</h6>
                                                             <!-- Info -->
                                                             <ul class="nav nav-divider small mb-2">
-                                                                <li class="nav-item"><fmt:formatDate value="${review.createdAt}" pattern="dd/MM/yyyy HH:mm:ss" /></li>
-                                                                
+                                                                <li class="nav-item"><fmt:formatDate value="${review.createdAtDate}" pattern="dd/MM/yyyy HH:mm:ss" /></li>
+
                                                             </ul>
                                                         </div>
                                                         <!-- Review star -->
@@ -537,16 +555,16 @@
                                     <!-- Title -->
                                     <div class="d-sm-flex justify-content-sm-between align-items-center mb-3">
                                         <div>
-                                            <span>Chủ</span>
-                                            <h4 class="card-title mb-0">${house.owner.fullName}</h4>
+                                            <span>Thông tin của chủ trọ</span>
+                                            <h4 class="card-title mb-0">Tên chủ sở hữu: ${house.profile.owner.fullName}</h4>
                                         </div>
 
                                     </div>		
 
 
-<!--                                    <p class="h6 fw-light mb-4"><i class="bi bi-arrow-right me-2"></i>${house.owner.email}</p>
+                                    <p class="h6 fw-light mb-4"><i class="bi bi-arrow-right me-2"></i>Email: ${house.profile.owner.email}</p>
 
-                                    <p class="h6 fw-light mb-4"><i class="bi bi-arrow-right me-2"></i>${house.owner.phoneNumber}</p>-->
+                                    <p class="h6 fw-light mb-4"><i class="bi bi-arrow-right me-2"></i>Số điện thoại: ${house.profile.owner.phoneNumber}</p>
 
                                     <!-- Button -->
                                     <div class="d-grid">
@@ -568,10 +586,10 @@
         <!-- **************** MAIN CONTENT END **************** -->
 
         <!-- =======================
-Footer START -->
+    Footer START -->
         <%@include file="../include/footer.jsp" %>
         <!-- =======================
-Footer END -->
+    Footer END -->
 
 
 

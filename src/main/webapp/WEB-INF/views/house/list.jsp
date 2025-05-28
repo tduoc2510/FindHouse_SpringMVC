@@ -101,12 +101,7 @@
 
                                                     <!-- List -->
                                                     <ul class="list-group list-group-borderless small mb-0 mt-2">
-                                                        <!--                                                        <li class="list-group-item d-flex text-success p-0">
-                                                                                                                    <i class="bi bi-patch-check-fill me-2"></i>${house.owner.phoneNumber}
-                                                                                                                </li>
-                                                                                                                <li class="list-group-item d-flex text-success p-0">
-                                                                                                                    <i class="bi bi-patch-check-fill me-2"></i>${house.owner.email}
-                                                                                                                </li>-->
+                                                        
                                                     </ul>
 
                                                     <!-- Price and Button -->

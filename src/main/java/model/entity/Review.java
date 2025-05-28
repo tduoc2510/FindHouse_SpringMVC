@@ -6,19 +6,21 @@ import org.hibernate.annotations.Nationalized;
 
 import java.time.Instant;
 import java.util.Date;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "Reviews")
 public class Review {
 
     @Id
-    @Column(name = "review_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "review_id", nullable = false)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private model.entity.User user;
+    private User user;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "room_id", nullable = false)
@@ -28,17 +30,16 @@ public class Review {
     private Integer rating;
 
     @Nationalized
-    @Lob
-    @Column(name = "comment")
+    @Column(name = "comment", columnDefinition = "NVARCHAR(MAX)")
     private String comment;
 
-    @ColumnDefault("getdate()")
-    @Column(name = "created_at")
-    private Date createdAt;
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private Instant createdAt;
 
-    @ColumnDefault("getdate()")
+    @UpdateTimestamp
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private Instant updatedAt;
 
     public Integer getId() {
         return id;
@@ -48,11 +49,11 @@ public class Review {
         this.id = id;
     }
 
-    public model.entity.User getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(model.entity.User user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -80,22 +81,24 @@ public class Review {
         this.comment = comment;
     }
 
-    public Date getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Instant getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-   
+    public Date getCreatedAtDate() {
+        return createdAt != null ? Date.from(createdAt) : null;
+    }
 
 }

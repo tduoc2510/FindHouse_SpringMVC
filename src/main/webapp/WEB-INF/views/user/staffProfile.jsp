@@ -48,9 +48,8 @@
                             <a class="h6 fw-light mb-0 text-body" href="${pageContext.request.contextPath}/logout" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Sign out">
                                 <i class="fa-solid fa-arrow-right-from-bracket"></i> Log out
                             </a>
-                            <a class="h6 mb-0 text-body" href="admin-settings.html" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Settings">
-                                <i class="bi bi-gear-fill"></i>
-                            </a>
+
+
                         </div>
                         <!-- Sidebar footer END -->
 
@@ -190,7 +189,7 @@
                                                 <small class="text-muted fs-6">
                                                     <i class="bi bi-calendar3 me-2"></i> 
                                                     Created at: 
-                                                    <fmt:formatDate value="${house.getCreatedAtAsDate()}" pattern="dd/MM/yyyy HH:mm:ss" />
+                                                    <fmt:formatDate value="${house.createdAtDate}" pattern="dd/MM/yyyy HH:mm:ss" />
                                                 </small>
 
                                                 <!-- Average Rating -->

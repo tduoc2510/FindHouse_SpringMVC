@@ -5,6 +5,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Nationalized;
 
 import java.time.Instant;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -13,11 +14,11 @@ import org.hibernate.annotations.OnDeleteAction;
 public class RoomImage {
 
     @Id
-    @Column(name = "image_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "image_id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
@@ -26,8 +27,8 @@ public class RoomImage {
     @Column(name = "image_url", nullable = false, length = 500)
     private String imageUrl;
 
-    @ColumnDefault("getdate()")
-    @Column(name = "created_at")
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
     public Integer getId() {
@@ -61,5 +62,7 @@ public class RoomImage {
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
+
+    
 
 }

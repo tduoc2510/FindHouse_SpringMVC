@@ -45,38 +45,40 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public boolean registerUser(String email, String username, String password) {
-        // Kiểm tra email hoặc username đã tồn tại
+    public User registerUser(String email, String username, String password,
+            String role, String fullName, String phoneNumber, String cccd) {
+        // Kiểm tra trùng lặp
         if (userRepository.existsByEmail(email) || userRepository.existsByUsername(username)) {
-            return false;
+            return null;
         }
 
-        // Hash mật khẩu trước khi lưu
+        // Hash mật khẩu
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-        // Tạo user mới
+        // Tạo người dùng mới
         User user = new User();
         user.setEmail(email);
         user.setUsername(username);
         user.setPassword(hashedPassword);
-        user.setRole("tenant");
+        user.setRole(role != null ? role : "tenant");
+        user.setFullName(fullName);
+        user.setPhoneNumber(phoneNumber);
+        user.setCccd(cccd);
+        user.setVerified(true);
         user.setCreatedAt(Instant.now());
         user.setUpdatedAt(Instant.now());
 
-        // Lưu vào database
-        userRepository.save(user);
-        return true;
-    }
-
-    public User validateUser(String email, String password) {
-        return userRepository.findByEmail(email)
-                .filter(user -> passwordEncoder.matches(password, user.getPassword()))
-                .orElse(null);
+        // Lưu user và trả về
+        return userRepository.save(user);
     }
 
     // Đếm User
     public int countUsers() {
         return (int) userRepository.count();
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email); // Giả sử bạn đã định nghĩa phương thức này trong repository
     }
 
 }
