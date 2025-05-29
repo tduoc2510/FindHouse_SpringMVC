@@ -7,7 +7,7 @@ GO
 CREATE TABLE Users (
     user_id INT IDENTITY(1,1) PRIMARY KEY,
     username NVARCHAR(50) NOT NULL UNIQUE,
-    $2a$10$AghY.Sw7qQJqBLbhOICEm.wDz.LJXeXD3rWllR4p6AhvnC587qV/aword NVARCHAR(255) NOT NULL,
+    password NVARCHAR(255) NOT NULL,
     email NVARCHAR(100) NOT NULL UNIQUE,
     full_name NVARCHAR(100),
     phone_number NVARCHAR(15),
@@ -39,7 +39,7 @@ CREATE TABLE BoardingHouses (
     address NVARCHAR(255) NOT NULL,
     location GEOGRAPHY,
     description NVARCHAR(MAX),
-	max_room_count INT NOT NULL DEFAULT 1;
+	max_room_count INT NOT NULL DEFAULT 1,
     created_at DATETIME DEFAULT GETDATE(),
     updated_at DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (profile_id) REFERENCES OwnerProfiles(profile_id)
@@ -153,7 +153,7 @@ CREATE TABLE RepairRequests (
 );
 GO
 -- USERS
-INSERT INTO Users (username, $2a$10$AghY.Sw7qQJqBLbhOICEm.wDz.LJXeXD3rWllR4p6AhvnC587qV/aword, email, full_name, phone_number, cccd, role, verified)
+INSERT INTO Users (username, password, email, full_name, phone_number, cccd, role, verified)
 VALUES 
 ('admin1', '$2a$10$AghY.Sw7qQJqBLbhOICEm.wDz.LJXeXD3rWllR4p6AhvnC587qV/a', 'admin1@example.com', N'Admin 1', '0900000001', '000000001', 'admin', 1),
 ('admin2', '$2a$10$AghY.Sw7qQJqBLbhOICEm.wDz.LJXeXD3rWllR4p6AhvnC587qV/a', 'admin2@example.com', N'Admin 2', '0900000002', '000000002', 'admin', 1),
