@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
@@ -21,12 +22,14 @@ public class EmailService {
         helper.setTo(email);
         helper.setSubject("Xác thực tài khoản - Ứng dụng Thuê Trọ");
 
+        // Phải dùng email đã xác minh trong SendGrid (ví dụ: kyumavn@gmail.com)
+        helper.setFrom("kyumavn@gmail.com");
+
         String content = "<html>"
                 + "<body style='font-family: Arial, sans-serif; background-color: #f6f6f6; padding: 20px;'>"
                 + "<div style='max-width: 600px; margin: auto; background-color: white; border-radius: 8px; "
                 + "box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 30px;'>"
                 + "<div style='text-align: center; margin-bottom: 20px;'>"
-                + "<img src='${pageContext.request.contextPath}/assets/images/logo.png' alt='App Logo' height='60' />"
                 + "<h2 style='color: #4CAF50;'>Xác thực tài khoản của bạn</h2>"
                 + "</div>"
                 + "<p>Chào bạn,</p>"
@@ -49,5 +52,4 @@ public class EmailService {
 
         mailSender.send(message);
     }
-
 }

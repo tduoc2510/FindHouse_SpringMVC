@@ -57,16 +57,18 @@
 
                                             <!-- Title -->
                                             <h1 class="mb-2 h3">Create new account</h1>
-                                            <p class="mb-0">Already a member?<a href="/login">Login</a></p>
-
-
+                                            <p class="mb-0">Already a member? <a href="/login">Login</a></p>
 
                                             <!-- Verification Form -->
                                             <form class="mt-4 text-start" action="${pageContext.request.contextPath}/signup" method="post">
+
                                                 <!-- Verification Code -->
                                                 <div class="mb-3">
                                                     <label class="form-label">Nhập mã xác thực</label>
                                                     <input type="text" name="verificationCode" class="form-control" required>
+                                                    <small class="form-text text-muted">
+                                                        Mã xác thực gồm 6 chữ số đã được gửi tới địa chỉ email ${email} mà bạn đã đăng ký.
+                                                    </small>
                                                 </div>
 
                                                 <!-- Submit Button -->
@@ -74,11 +76,10 @@
                                                     <button type="submit" class="btn btn-primary w-100 mb-0">Xác thực</button>
                                                 </div>
                                             </form>
-
-
                                             <!-- Form END -->
                                         </div>		
                                     </div>
+
                                 </div>
                             </div>
                         </div>
