@@ -193,12 +193,9 @@
                                                         <!-- Card img -->
                                                         <div class="col-md-5 position-relative">
 
-
-
                                                             <!-- Slider START -->
                                                             <div class="tiny-slider arrow-round arrow-xs arrow-dark overflow-hidden rounded-2">
                                                                 <div class="tiny-slider-inner" data-autoplay="true" data-arrow="true" data-dots="false" data-items="1">
-                                                                    <!-- Image item -->
                                                                     <c:if test="${not empty roomImagesMap[room.id]}">
                                                                         <c:forEach var="image" items="${roomImagesMap[room.id]}">
                                                                             <div>
@@ -211,7 +208,10 @@
                                                             <!-- Slider END -->
 
                                                             <!-- Button -->
-                                                            <a href="#" class="btn btn-link text-decoration-underline p-0 mb-0 mt-1" data-bs-toggle="modal" data-bs-target="#roomDetail"><i class="bi bi-eye-fill me-1"></i>View more details</a>
+                                                            <a href="#" class="btn btn-link text-decoration-underline p-0 mb-0 mt-1"
+                                                               data-bs-toggle="modal" data-bs-target="#roomDetail_${room.id}">
+                                                                <i class="bi bi-eye-fill me-1"></i>View more details
+                                                            </a>
                                                         </div>
 
                                                         <!-- Card body -->
@@ -229,8 +229,6 @@
                                                                     </c:otherwise>
                                                                 </c:choose>
 
-
-
                                                                 <!-- Amenities -->
                                                                 <ul class="nav nav-divider mb-2">
                                                                     <c:forEach var="amenity" items="${room.amenities}">
@@ -238,45 +236,55 @@
                                                                         </c:forEach>
                                                                 </ul>
 
-
                                                                 <!-- Price and Button -->
                                                                 <div class="d-sm-flex justify-content-sm-between align-items-center mt-auto">
-                                                                    <!-- Button -->
                                                                     <div class="d-flex align-items-center">
-                                                                        <h5 class="fw-bold mb-0 me-1"> <fmt:formatNumber value="${room.price}" currencySymbol="₫" groupingUsed="true"/> VND/Tháng</h5>
+                                                                        <h5 class="fw-bold mb-0 me-1">
+                                                                            <fmt:formatNumber value="${room.price}" currencySymbol="₫" groupingUsed="true"/> VND/Tháng
+                                                                        </h5>
                                                                     </div>
-
-                                                                    <!-- Price -->
                                                                     <c:if test="${room.status eq 'available'}">
-                                                                        <div class="mt-3 mt-sm-0">
-                                                                            <a href="#" class="btn btn-sm btn-primary mb-0">Select Room</a>    
-                                                                        </div>            
-                                                                    </c:if>
+                                                                        <c:choose>
+                                                                            <c:when test="${not empty USER}">
+                                                                                <div class="mt-3 mt-sm-0">
+                                                                                    <a href="#" class="btn btn-sm btn-primary mb-0"
+                                                                                       data-bs-toggle="modal" data-bs-target="#bookingModal${room.id}">
+                                                                                        Select Room
+                                                                                    </a>
+                                                                                </div>
 
+                                                                            </c:when>
+
+                                                                            <c:otherwise>
+                                                                                <div class="mt-3 mt-sm-0">
+                                                                                    <a href="${pageContext.request.contextPath}/login"
+                                                                                       class="btn btn-sm btn-warning mb-0"
+                                                                                       onclick="return confirm('Bạn cần đăng nhập để đặt phòng. Chuyển đến trang đăng nhập?');">
+                                                                                        Đăng nhập để đặt phòng
+                                                                                    </a>
+                                                                                </div>
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                    </c:if>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+
                                                 <!-- Room modal START -->
-                                                <div class="modal fade" id="roomDetail" tabindex="-1" aria-labelledby="roomDetailLabel" aria-hidden="true">
+                                                <div class="modal fade" id="roomDetail_${room.id}" tabindex="-1" aria-labelledby="roomDetailLabel_${room.id}" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content p-0">
-
-                                                            <!-- Title -->
                                                             <div class="modal-header p-3">
-                                                                <h5 class="modal-title mb-0" id="roomDetailLabel">Room detail</h5>
+                                                                <h5 class="modal-title mb-0" id="roomDetailLabel_${room.id}">Room detail</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
 
-                                                            <!-- Modal body -->
                                                             <div class="modal-body p-0">
-                                                                <!-- Card START -->
                                                                 <div class="card bg-transparent p-3">
-                                                                    <!-- Slider START -->
                                                                     <div class="tiny-slider arrow-round arrow-dark overflow-hidden rounded-2">
                                                                         <div class="tiny-slider-inner rounded-2 overflow-hidden" data-autoplay="true" data-arrow="true" data-dots="false" data-items="1">
-                                                                            <!-- Image item -->
                                                                             <c:if test="${not empty roomImagesMap[room.id]}">
                                                                                 <c:forEach var="image" items="${roomImagesMap[room.id]}">
                                                                                     <div>
@@ -286,36 +294,85 @@
                                                                             </c:if>
                                                                         </div>
                                                                     </div>
-                                                                    <!-- Slider END -->
 
-                                                                    <!-- Card header -->
                                                                     <div class="card-header bg-transparent pb-0">
                                                                         <h3 class="card-title mb-0">${room.title}</h3>
                                                                     </div>
 
-                                                                    <!-- Card body START -->
                                                                     <div class="card-body">
-                                                                        <!-- Content -->
                                                                         <p>${room.description}</p>
                                                                         <div class="row">
                                                                             <h5 class="mb-0">Tiện nghi</h5>
-
-                                                                            <!-- List -->
                                                                             <hr>
-                                                                            <li class="list-group-item d-flex mb-0">
-                                                                                <i class="fa-solid fa-check-circle text-success me-2"></i><span class="h6 fw-light mb-0">${room.amenities}</span>
-                                                                            </li>
-                                                                        </div> <!-- Row END -->
+                                                                            <c:forEach var="amenity" items="${room.amenities}">
+                                                                                <li class="list-group-item d-flex mb-0">
+                                                                                    <i class="fa-solid fa-check-circle text-success me-2"></i><span class="h6 fw-light mb-0">${amenity.name}</span>
+                                                                                </li>
+                                                                            </c:forEach>
+                                                                        </div>
                                                                     </div>
-                                                                    <!-- Card body END -->
                                                                 </div>
-                                                                <!-- Card END -->
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- Room item END -->
+
+                                                <div class="modal fade" id="bookingModal${room.id}" tabindex="-1" aria-labelledby="bookingModalLabel${room.id}" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <!-- Header -->
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="bookingModalLabel${room.id}">Booking for Room ${room.title}</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <!-- Body -->
+                                                            <div class="modal-body">
+                                                                <form action="${pageContext.request.contextPath}/booking/createBooking" method="post">
+                                                                    <input type="hidden" name="roomId" value="${room.id}" />
+
+                                                                    <!-- Thông tin phòng -->
+                                                                    <div class="mb-3">
+                                                                        <h5>Thông tin phòng trọ</h5>
+                                                                        <p><strong>Tiêu đề:</strong> ${room.title}</p>
+                                                                        <p><strong>Mô tả:</strong> ${room.description}</p>
+                                                                        <p><strong>Giá thuê:</strong> <fmt:formatNumber value="${room.price}"  currencySymbol="VNĐ" />  VNĐ/Tháng</p>
+                                                                        <p><strong>Diện tích:</strong> ${room.area} m²</p>
+                                                                        <p><strong>Tiện nghi:</strong> <c:forEach var="amenity" items="${room.amenities}">
+                                                                            <li class="list-group-item d-flex mb-0">
+                                                                                <i class="fa-solid fa-check-circle text-success me-2"></i><span class="h6 fw-light mb-0">${amenity.name}</span>
+                                                                            </li>
+                                                                        </c:forEach></p>
+                                                                    </div>
+
+                                                                    <!-- Chọn ngày xem trọ -->
+                                                                    <div class="mb-3">
+                                                                        <label for="viewingDate" class="form-label">Chọn ngày xem trọ</label>
+                                                                        <input type="datetime-local" name="viewingDate" class="form-control" required>
+                                                                    </div>
+
+                                                                    <!-- Thông tin người dùng -->
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Tên của bạn</label>
+                                                                        <input type="text" class="form-control" value="${USER.fullName}" readonly>
+                                                                    </div>
+
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Số điện thoại</label>
+                                                                        <input type="text" class="form-control" value="${USER.phoneNumber}" readonly>
+                                                                    </div>
+
+                                                                    <div class="text-end">
+                                                                        <button type="submit" class="btn btn-primary">Xác nhận đặt lịch</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Room modal END -->
                                             </c:forEach>
+
                                             <!-- Map modal START -->
                                             <div class="modal fade" id="mapmodal" tabindex="-1" aria-labelledby="mapmodalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -327,7 +384,11 @@
                                                         </div>
                                                         <!-- Map -->
                                                         <div class="modal-body p-0">
-                                                            <iframe class="w-100" height="400" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.9663095343008!2d-74.00425878428698!3d40.74076684379132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259bf5c1654f3%3A0xc80f9cfce5383d5d!2sGoogle!5e0!3m2!1sen!2sin!4v1586000412513!5m2!1sen!2sin"  style="border:0;" aria-hidden="false" tabindex="0"></iframe>	
+                                                            <iframe class="w-100" height="400"
+                                                                    src="https://maps.google.com/maps?q=${house.address}&z=15&output=embed"
+                                                                    style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                                                            </iframe>
+
                                                         </div>
                                                         <!-- Button -->
                                                         <div class="modal-footer">
@@ -336,6 +397,8 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+
                                             <!-- Map modal END -->
                                         </div>
                                     </div>

@@ -1,15 +1,11 @@
 package model.entity;
 
 import javax.persistence.*;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.Nationalized;
-
 import java.time.Instant;
+import java.util.Date;
+import org.hibernate.annotations.Nationalized;
 
 @Entity
 @Table(name = "BookingRequests")
@@ -29,10 +25,13 @@ public class BookingRequest {
     private Room room;
 
     @Column(name = "status", length = 50, nullable = false)
-    private String status = "pending";  // ✅ giá trị mặc định
+    private String status = "pending";
 
     @Column(name = "reason", length = 50)
     private String reason;
+
+    @Column(name = "viewing_date")
+    private Instant viewingDate;
 
     @CreationTimestamp
     @Column(name = "requested_at", updatable = false)
@@ -42,6 +41,11 @@ public class BookingRequest {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    @Nationalized
+    @Column(name = "contract_file", length = 255)
+    private String contractFile; // VD: "contract_123.pdf"
+
+    // --- Getters & Setters ---
     public Integer getId() {
         return id;
     }
@@ -82,6 +86,14 @@ public class BookingRequest {
         this.reason = reason;
     }
 
+    public Instant getViewingDate() {
+        return viewingDate;
+    }
+
+    public void setViewingDate(Instant viewingDate) {
+        this.viewingDate = viewingDate;
+    }
+
     public Instant getRequestedAt() {
         return requestedAt;
     }
@@ -96,6 +108,27 @@ public class BookingRequest {
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    // --- Instant -> Date conversion for JSP ---
+    public Date getRequestedAtAsDate() {
+        return requestedAt != null ? Date.from(requestedAt) : null;
+    }
+
+    public Date getUpdatedAtAsDate() {
+        return updatedAt != null ? Date.from(updatedAt) : null;
+    }
+
+    public Date getViewingDateAsDate() {
+        return viewingDate != null ? Date.from(viewingDate) : null;
+    }
+
+    public String getContractFile() {
+        return contractFile;
+    }
+
+    public void setContractFile(String contractFile) {
+        this.contractFile = contractFile;
     }
 
 }

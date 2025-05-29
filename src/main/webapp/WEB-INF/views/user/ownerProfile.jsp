@@ -232,6 +232,8 @@
                                                     <th scope="col" class="border-0">Phòng</th>
                                                     <th scope="col" class="border-0">Giá phòng</th>
                                                     <th scope="col" class="border-0">Ngày đăng ký</th>
+                                                    <th scope="col" class="border-0">Ngày hẹn xem phòng</th>
+
                                                     <th scope="col" class="border-0">Trạng thái</th>
                                                     <th scope="col" class="border-0 rounded-end">Action</th>
                                                 </tr>
@@ -239,13 +241,11 @@
 
                                             <!-- Table body START -->
 
-                                            <c:forEach items="${bookingRequests}" var="bookingRequest">
-
-                                                <tbody class="border-top-0"> 
-                                                    <!-- Table item -->
+                                            <tbody class="border-top-0">
+                                                <c:forEach items="${bookingRequests}" var="bookingRequest">
                                                     <tr>
-                                                        <td> <h6 class="mb-0">${bookingRequest.id}</h6> </td>
-                                                        <td> <h6 class="mb-0"><a href="#">${bookingRequest.user.fullName}</a></h6> </td>
+                                                        <td><h6 class="mb-0">${bookingRequest.id}</h6></td>
+                                                        <td><h6 class="mb-0"><a href="#">${bookingRequest.user.fullName}</a></h6></td>
                                                         <td>
                                                             <c:choose>
                                                                 <c:when test="${bookingRequest.status == 'confirm3'}">
@@ -260,14 +260,16 @@
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </td>
-
-                                                        <td> ${bookingRequest.room.title} </td>
-                                                        <td><fmt:formatNumber value="${bookingRequest.room.price}" type="currency" currencySymbol="₫" groupingUsed="true"/> VNĐ</td>
+                                                        <td>${bookingRequest.room.title}</td>
                                                         <td>
-                                                            <fmt:formatDate value="${bookingRequest.requestedAt}" pattern="dd/MM/yyyy HH:mm:ss" />
+                                                            <fmt:formatNumber value="${bookingRequest.room.price}" /> VNĐ
                                                         </td>
-
-
+                                                        <td>
+                                                            <fmt:formatDate value="${bookingRequest.requestedAtAsDate}" pattern="dd/MM/yyyy HH:mm:ss" />
+                                                        </td>
+                                                        <td>
+                                                            <fmt:formatDate value="${bookingRequest.viewingDateAsDate}" pattern="dd/MM/yyyy HH:mm:ss" />
+                                                        </td>
                                                         <td>
                                                             <c:choose>
                                                                 <c:when test="${bookingRequest.status == 'pending'}">
@@ -290,51 +292,71 @@
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </td>
-                                                        <c:choose>
-                                                            <c:when test="${bookingRequest.status == 'confirm1'}">
-                                                                <td>
-
-                                                                    <form action="${pageContext.request.contextPath}/booking/update-status" method="post" onsubmit="return handleStatusChange(${bookingRequest.id});">
+                                                        <td>
+                                                            <c:choose>
+                                                                <c:when test="${bookingRequest.status == 'confirm1'}">
+                                                                    <form id="form-${bookingRequest.id}">
                                                                         <input type="hidden" name="requestId" value="${bookingRequest.id}" />
                                                                         <input type="hidden" id="status_${bookingRequest.id}" name="status" />
                                                                         <input type="hidden" id="reason_${bookingRequest.id}" name="reason" />
 
-                                                                        <button type="button" class="btn btn-sm btn-success mb-0" onclick="acceptRequest(${bookingRequest.id})">Accept</button>
-                                                                        <button type="button" class="btn btn-sm btn-danger mb-0" onclick="rejectRequest(${bookingRequest.id})">Reject</button>
+                                                                        <button type="button" class="btn btn-success" onclick="acceptRequest(${bookingRequest.id})">Accept</button>
+                                                                        <button type="button" class="btn btn-danger" onclick="rejectRequest(${bookingRequest.id})">Reject</button>
                                                                     </form>
-                                                                </td>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <td>
+
+                                                                </c:when>
+                                                                <c:otherwise>
                                                                     <div class="badge text-bg-secondary">None</div>
-                                                                </td>
-                                                            </c:otherwise>
-                                                        </c:choose>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
 
-                                                <script>
-                                                    function acceptRequest(requestId) {
-                                                        document.getElementById("status_" + requestId).value = "confirm2";
-                                                        document.getElementById("reason_" + requestId).value = ""; // Không cần lý do
-                                                        document.getElementById("status_" + requestId).form.submit();
+
+                                            <script>
+                                                function acceptRequest(id) {
+                                                    updateStatus(id, "confirm2", "");
+                                                }
+
+                                                function rejectRequest(id) {
+                                                    const reason = prompt("Vui lòng nhập lý do từ chối:");
+                                                    if (!reason || reason.trim() === "") {
+                                                        alert("Bạn phải nhập lý do!");
+                                                        return;
                                                     }
+                                                    updateStatus(id, "rejected", reason);
+                                                }
 
-                                                    function rejectRequest(requestId) {
-                                                        let reason = prompt("Vui lòng nhập lý do từ chối:");
-                                                        if (reason === null || reason.trim() === "") {
-                                                            alert("Bạn phải nhập lý do!");
-                                                            return;
-                                                        }
-                                                        document.getElementById("status_" + requestId).value = "rejected";
-                                                        document.getElementById("reason_" + requestId).value = reason;
-                                                        document.getElementById("status_" + requestId).form.submit();
-                                                    }
-                                                </script>
+                                                function updateStatus(id, status, reason) {
+                                                    const formData = new FormData();
+                                                    formData.append("requestId", id);
+                                                    formData.append("status", status);
+                                                    formData.append("reason", reason);
+
+                                                    fetch("${pageContext.request.contextPath}/booking/update-status", {
+                                                        method: "POST",
+                                                        body: formData
+                                                    })
+                                                            .then(response => {
+                                                                if (!response.ok)
+                                                                    throw new Error("Lỗi máy chủ");
+                                                                return response.text();
+                                                            })
+                                                            .then(data => {
+                                                                alert("Cập nhật trạng thái thành công!");
+                                                                // Gợi ý: cập nhật UI tại chỗ, hoặc reload một phần bảng
+                                                                location.reload(); // hoặc cập nhật DOM cụ thể
+                                                            })
+                                                            .catch(error => {
+                                                                alert("Đã xảy ra lỗi: " + error.message);
+                                                            });
+                                                }
+                                            </script>
 
 
-                                                </tr>
 
-                                                </tbody>
-                                            </c:forEach>
 
 
                                             <!-- Table body END -->

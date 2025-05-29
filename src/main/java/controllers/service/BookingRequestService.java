@@ -5,6 +5,7 @@
 package controllers.service;
 
 import controllers.repository.BookingRequestRepository;
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import model.entity.Room;
+import model.entity.User;
 
 @Service
 public class BookingRequestService {
@@ -52,6 +55,19 @@ public class BookingRequestService {
             return true;
         }
         return false;
+    }
+
+    public void createBooking(User user, Room room, Instant viewingDate) {
+        BookingRequest booking = new BookingRequest();
+        booking.setUser(user);
+        booking.setRoom(room);
+        booking.setViewingDate(viewingDate);
+        booking.setStatus("pending");
+        bookingRequestRepository.save(booking);
+    }
+
+    public List<BookingRequest> getBookingsByUser(User user) {
+        return bookingRequestRepository.findByUser(user);
     }
 
 }

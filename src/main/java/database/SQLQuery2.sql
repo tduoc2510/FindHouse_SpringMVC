@@ -106,6 +106,8 @@ CREATE TABLE BookingRequests (
     reason NVARCHAR(255),
     requested_at DATETIME DEFAULT GETDATE(),
     updated_at DATETIME DEFAULT GETDATE(),
+    viewing_date DATETIME,
+    contract_file NVARCHAR(255),
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (room_id) REFERENCES Rooms(room_id)
 );

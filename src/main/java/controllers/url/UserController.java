@@ -109,7 +109,7 @@ public class UserController {
         }
         List<BookingRequest> tenantRequests = bookingRequestService.getBookingRequestsByUserId(user.getId());
         model.addAttribute("bookingRequests", tenantRequests);
-        return "user/booking"; // Nếu đã đăng nhập, hiển thị trang profile
+        return "user/userBooking"; // Nếu đã đăng nhập, hiển thị trang profile
     }
 
     @PostMapping("/profile/update")
