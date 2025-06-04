@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
 
 <!DOCTYPE html>
@@ -71,69 +73,73 @@
             Image gallery START -->
             <section class="card-grid pt-0">
                 <div class="container">
-                    <div class="row g-2">
-                        <!-- Image -->
-                        <div class="col-md-6">
-                            <a data-glightbox data-gallery="gallery" href="${pageContext.request.contextPath}/assets/images/gallery/14.jpg">
-                                <div class="card card-grid-lg card-element-hover card-overlay-hover overflow-hidden" style="background-image:url(${pageContext.request.contextPath}/assets/images/gallery/14.jpg); background-position: center left; background-size: cover;">
-                                    <!-- Card hover element -->
-                                    <div class="hover-element position-absolute w-100 h-100">
-                                        <i class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-1 p-2 lh-1"></i>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                    <c:if test="${not empty allRoomImages}">
+                        <div class="row g-2">
 
-                        <div class="col-md-6">
-                            <!-- Card item START -->
-                            <div class="row g-2"> 
-                                <!-- Image -->
-                                <div class="col-12">
-                                    <a data-glightbox data-gallery="gallery" href="${pageContext.request.contextPath}/assets/images/gallery/13.jpg">
-                                        <div class="card card-grid-sm card-element-hover card-overlay-hover overflow-hidden" style="background-image:url(${pageContext.request.contextPath}/assets/images/gallery/13.jpg); background-position: center left; background-size: cover;">
-                                            <!-- Card hover element -->
-                                            <div class="hover-element position-absolute w-100 h-100">
-                                                <i class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-1 p-2 lh-1"></i>
-                                            </div>
-                                        </div>
-                                    </a>	
-                                </div>
-
-                                <!-- Image -->
-                                <div class="col-md-6">
-                                    <a data-glightbox data-gallery="gallery" href="${pageContext.request.contextPath}/assets/images/gallery/12.jpg">
-                                        <div class="card card-grid-sm card-element-hover card-overlay-hover overflow-hidden" style="background-image:url(${pageContext.request.contextPath}/assets/images/gallery/12.jpg); background-position: center left; background-size: cover;">
-                                            <!-- Card hover element -->
-                                            <div class="hover-element position-absolute w-100 h-100">
-                                                <i class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-1 p-2 lh-1"></i>
-                                            </div>
-                                        </div>
-                                    </a>	
-                                </div>
-
-                                <!-- Images -->
-                                <div class="col-md-6">
-                                    <div class="card card-grid-sm overflow-hidden" style="background-image:url(${pageContext.request.contextPath}/assets/images/gallery/11.jpg); background-position: center left; background-size: cover;">
-                                        <!-- Background overlay -->
-                                        <div class="bg-overlay bg-dark opacity-7"></div>
-
-                                        <!-- Popup Images -->
-                                        <a data-glightbox="" data-gallery="gallery" href="${pageContext.request.contextPath}/assets/images/gallery/11.jpg" class="stretched-link z-index-9"></a>
-                                        <a data-glightbox="" data-gallery="gallery" href="${pageContext.request.contextPath}/assets/images/gallery/15.jpg"></a>
-                                        <a data-glightbox="" data-gallery="gallery" href="${pageContext.request.contextPath}/assets/images/gallery/16.jpg"></a>
-
-                                        <!-- Overlay text -->
-                                        <div class="card-img-overlay d-flex h-100 w-100">
-                                            <h6 class="card-title m-auto fw-light text-decoration-underline"><a href="#" class="text-white">View all</a></h6>
+                            <!-- Ảnh lớn đầu tiên -->
+                            <c:set var="firstImage" value="${allRoomImages[0]}" />
+                            <div class="col-md-6">
+                                <a data-glightbox data-gallery="gallery" href="${pageContext.request.contextPath}${firstImage.imageUrl}">
+                                    <div class="card card-grid-lg card-element-hover card-overlay-hover overflow-hidden"
+                                         style="background-image:url('${pageContext.request.contextPath}${firstImage.imageUrl}'); background-position: center left; background-size: cover;">
+                                        <div class="hover-element position-absolute w-100 h-100">
+                                            <i class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-1 p-2 lh-1"></i>
                                         </div>
                                     </div>
+                                </a>
+                            </div>
+
+                            <!-- Nhóm ảnh nhỏ bên phải -->
+                            <div class="col-md-6">
+                                <div class="row g-2">
+
+                                    <!-- 2 ảnh tiếp theo -->
+                                    <c:forEach var="image" items="${allRoomImages}" varStatus="loop">
+                                        <c:if test="${loop.index == 1 || loop.index == 2}">
+                                            <div class="${loop.index == 1 ? 'col-12' : 'col-md-6'}">
+                                                <a data-glightbox data-gallery="gallery" href="${pageContext.request.contextPath}${image.imageUrl}">
+                                                    <div class="card card-grid-sm card-element-hover card-overlay-hover overflow-hidden"
+                                                         style="background-image:url('${pageContext.request.contextPath}${image.imageUrl}'); background-position: center left; background-size: cover;">
+                                                        <div class="hover-element position-absolute w-100 h-100">
+                                                            <i class="bi bi-fullscreen fs-6 text-white position-absolute top-50 start-50 translate-middle bg-dark rounded-1 p-2 lh-1"></i>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </c:if>
+                                    </c:forEach>
+
+                                    <!-- Nếu còn ảnh dư thì View all -->
+                                    <c:if test="${fn:length(allRoomImages) > 3}">
+                                        <div class="col-md-6">
+                                            <div class="card card-grid-sm overflow-hidden"
+                                                 style="background-image:url('${pageContext.request.contextPath}${allRoomImages[3].imageUrl}'); background-position: center left; background-size: cover;">
+                                                <div class="bg-overlay bg-dark opacity-7"></div>
+
+                                                <!-- Các ảnh dư để mở bằng lightbox -->
+                                                <c:forEach var="image" items="${allRoomImages}" varStatus="loop">
+                                                    <c:if test="${loop.index > 3}">
+                                                        <a data-glightbox data-gallery="gallery" href="${pageContext.request.contextPath}${image.imageUrl}"></a>
+                                                    </c:if>
+                                                </c:forEach>
+
+                                                <div class="card-img-overlay d-flex h-100 w-100">
+                                                    <h6 class="card-title m-auto fw-light text-decoration-underline">
+                                                        <a href="javascript:void(0)" class="text-white">View all</a>
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:if>
+
                                 </div>
                             </div>
-                            <!-- Card item END -->
+
                         </div>
-                    </div>
+                    </c:if>
                 </div>
             </section>
+
             <!-- =======================
             Image gallery END -->
 
@@ -199,7 +205,9 @@
                                                                     <c:if test="${not empty roomImagesMap[room.id]}">
                                                                         <c:forEach var="image" items="${roomImagesMap[room.id]}">
                                                                             <div>
-                                                                                <img src="${pageContext.request.contextPath}/assets/images/category/hotel/4by3/04.jpg" alt="Card image">
+                                                                                <img src="${pageContext.request.contextPath}${image.imageUrl}" 
+                                                                                     alt="Room image"
+                                                                                     style="width: 233px; height: 175px; object-fit: contain; border-radius: 8px;" />
                                                                             </div>
                                                                         </c:forEach>
                                                                     </c:if>
@@ -288,7 +296,9 @@
                                                                             <c:if test="${not empty roomImagesMap[room.id]}">
                                                                                 <c:forEach var="image" items="${roomImagesMap[room.id]}">
                                                                                     <div>
-                                                                                        <img src="${pageContext.request.contextPath}/assets/images/category/hotel/4by3/04.jpg" alt="Card image">
+                                                                                        <img src="${pageContext.request.contextPath}${image.imageUrl}" 
+                                                                                             alt="Room image"
+                                                                                             style="width: 468px; height: 351px; object-fit: cover; border-radius: 8px;" />
                                                                                     </div>
                                                                                 </c:forEach>
                                                                             </c:if>
@@ -410,7 +420,7 @@
                                 <div class="card bg-transparent">
                                     <!-- Card header -->
                                     <div class="card-header border-bottom bg-transparent px-0 pt-0">
-                                        <h3 class="card-title mb-0">Customer Review1</h3>
+                                        <h3 class="card-title mb-0">Customer Review</h3>
                                     </div>
 
                                     <!-- Card body START -->
@@ -419,137 +429,45 @@
                                         <div class="card bg-light p-4 mb-4">
                                             <div class="row g-4 align-items-center">
                                                 <!-- Rating info -->
-                                                <div class="col-md-4">
+                                                <div class="col-md-12">
                                                     <div class="text-center">
                                                         <!-- Điểm trung bình -->
-                                                        <h2 class="mb-0">${averageRating}</h2>
+                                                        <h2 class="mb-0">${averageRating} <i class="fa-solid fa-star text-warning"></i></h2>
                                                         <p class="mb-2">Based on ${totalReviews} Reviews</p>
 
-                                                        <!-- Hiển thị sao -->
-                                                        <ul class="list-inline mb-0">
-                                                            <!-- Sao đầy -->
-                                                            <c:forEach var="i" begin="1" end="${fullStars}">
-                                                                <li class="list-inline-item me-0"><i class="fa-solid fa-star text-warning"></i></li>
-                                                                </c:forEach>
-
-                                                            <!-- Sao nửa -->
-                                                            <c:if test="${halfStar}">
-                                                                <li class="list-inline-item me-0"><i class="fa-solid fa-star-half-alt text-warning"></i></li>
-                                                                </c:if>
-
-                                                            <!-- Sao trống -->
-                                                            <c:forEach var="i" begin="1" end="${emptyStars}">
-                                                                <li class="list-inline-item me-0"><i class="fa-regular fa-star text-warning"></i></li>
-                                                                </c:forEach>
-                                                        </ul>
                                                     </div>
                                                 </div>
-
-
-
-                                                <!-- Progress-bar START -->
-                                                <div class="col-md-8">
-                                                    <div class="card-body p-0">
-                                                        <div class="row gx-3 g-2 align-items-center">
-                                                            <!-- Progress bar and Rating -->
-                                                            <div class="col-9 col-sm-10">
-                                                                <!-- Progress item -->
-                                                                <div class="progress progress-sm bg-warning bg-opacity-15">
-                                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- Percentage -->
-                                                            <div class="col-3 col-sm-2 text-end">
-                                                                <span class="h6 fw-light mb-0">85%</span>
-                                                            </div>
-
-                                                            <!-- Progress bar and Rating -->
-                                                            <div class="col-9 col-sm-10">
-                                                                <!-- Progress item -->
-                                                                <div class="progress progress-sm bg-warning bg-opacity-15">
-                                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- Percentage -->
-                                                            <div class="col-3 col-sm-2 text-end">
-                                                                <span class="h6 fw-light mb-0">75%</span>
-                                                            </div>
-
-                                                            <!-- Progress bar and Rating -->
-                                                            <div class="col-9 col-sm-10">
-                                                                <!-- Progress item -->
-                                                                <div class="progress progress-sm bg-warning bg-opacity-15">
-                                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- Percentage -->
-                                                            <div class="col-3 col-sm-2 text-end">
-                                                                <span class="h6 fw-light mb-0">60%</span>
-                                                            </div>
-
-                                                            <!-- Progress bar and Rating -->
-                                                            <div class="col-9 col-sm-10">
-                                                                <!-- Progress item -->
-                                                                <div class="progress progress-sm bg-warning bg-opacity-15">
-                                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- Percentage -->
-                                                            <div class="col-3 col-sm-2 text-end">
-                                                                <span class="h6 fw-light mb-0">35%</span>
-                                                            </div>
-
-                                                            <!-- Progress bar and Rating -->
-                                                            <div class="col-9 col-sm-10">
-                                                                <!-- Progress item -->
-                                                                <div class="progress progress-sm bg-warning bg-opacity-15">
-                                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- Percentage -->
-                                                            <div class="col-3 col-sm-2 text-end">
-                                                                <span class="h6 fw-light mb-0">15%</span>
-                                                            </div>
-                                                        </div> <!-- Row END -->
-                                                    </div>
-                                                </div>
-                                                <!-- Progress-bar END -->
                                             </div>
                                         </div>
                                         <!-- Progress bar and rating END -->
 
                                         <!-- Leave review START -->
-                                        <!--                                        <form action="/reviews/add" method="post" class="mb-5">
-                                                                                     Truyền roomId và userId 
-                                                                                    <input type="hidden" name="roomId" value="1">
-                                                                                    <input type="hidden" name="userId" value="1">
-                                        
-                                                                                     Rating 
-                                                                                    <div class="form-control-bg-light mb-3">
-                                                                                        <select class="form-select js-choice" name="rating" required>
-                                                                                            <option value="5">⭐️⭐️⭐️⭐️⭐️ (5/5)</option>
-                                                                                            <option value="4">⭐️⭐️⭐️⭐️ (4/5)</option>
-                                                                                            <option value="3">⭐️⭐️⭐️ (3/5)</option>
-                                                                                            <option value="2">⭐️⭐️ (2/5)</option>
-                                                                                            <option value="1">⭐️ (1/5)</option>
-                                                                                        </select>
-                                                                                    </div>
-                                        
-                                                                                     Message 
-                                                                                    <div class="form-control-bg-light mb-3">
-                                                                                        <textarea class="form-control" name="comment" placeholder="Nhập đánh giá của bạn" rows="3"></textarea>
-                                                                                    </div> 
-                                        
-                                                                                     Button 
-                                                                                    <button type="submit" class="btn btn-lg btn-primary mb-0">
-                                                                                        Gửi đánh giá <i class="bi fa-fw bi-arrow-right ms-2"></i>
-                                                                                    </button>
-                                                                                </form>-->
+                                        <!--                                                                                <form action="/reviews/add" method="post" class="mb-5">
+                                                                                                                             Truyền roomId và userId 
+                                                                                                                            <input type="hidden" name="roomId" value="1">
+                                                                                                                            <input type="hidden" name="userId" value="1">
+                                                                                
+                                                                                                                             Rating 
+                                                                                                                            <div class="form-control-bg-light mb-3">
+                                                                                                                                <select class="form-select js-choice" name="rating" required>
+                                                                                                                                    <option value="5">⭐️⭐️⭐️⭐️⭐️ (5/5)</option>
+                                                                                                                                    <option value="4">⭐️⭐️⭐️⭐️ (4/5)</option>
+                                                                                                                                    <option value="3">⭐️⭐️⭐️ (3/5)</option>
+                                                                                                                                    <option value="2">⭐️⭐️ (2/5)</option>
+                                                                                                                                    <option value="1">⭐️ (1/5)</option>
+                                                                                                                                </select>
+                                                                                                                            </div>
+                                                                                
+                                                                                                                             Message 
+                                                                                                                            <div class="form-control-bg-light mb-3">
+                                                                                                                                <textarea class="form-control" name="comment" placeholder="Nhập đánh giá của bạn" rows="3"></textarea>
+                                                                                                                            </div> 
+                                                                                
+                                                                                                                             Button 
+                                                                                                                            <button type="submit" class="btn btn-lg btn-primary mb-0">
+                                                                                                                                Gửi đánh giá <i class="bi fa-fw bi-arrow-right ms-2"></i>
+                                                                                                                            </button>
+                                                                                                                        </form>-->
 
 
                                         <%-- Hiển thị thông báo khi thêm đánh giá thành công --%>
@@ -560,46 +478,53 @@
 
                                         <!-- Review item START -->
                                         <c:forEach var="review" items="${reviews}">
-                                            <hr>
-                                            <div class="d-md-flex my-4">
-                                                <!-- Avatar -->
-                                                <div class="avatar avatar-lg me-3 flex-shrink-0">
-                                                    <img class="avatar-img rounded-circle" src="${pageContext.request.contextPath}/assets/images/avatar/09.jpg" alt="avatar">
-                                                </div>
-                                                <!-- Text -->
-                                                <div>
-                                                    <div class="d-flex justify-content-between mt-1 mt-md-0">
-                                                        <div>
-
-                                                            <h5 class="me-3 mb-0">${review.user.fullName} (${review.user.email})</h5>
-                                                            <h6 class="me-3 mb-0">${review.room.title}: ${review.room.description}</h6>
-                                                            <!-- Info -->
-                                                            <ul class="nav nav-divider small mb-2">
-                                                                <li class="nav-item"><fmt:formatDate value="${review.createdAtDate}" pattern="dd/MM/yyyy HH:mm:ss" /></li>
-
-                                                            </ul>
+                                            <div class="card border rounded-3 shadow-sm mb-5">
+                                                <div class="card-body">
+                                                    <div class="d-md-flex mb-3">
+                                                        <!-- Avatar -->
+                                                        <div class="avatar avatar-lg me-4 flex-shrink-0">
+                                                            <img class="avatar-img rounded-circle" src="${pageContext.request.contextPath}/assets/images/avatar/09.jpg" alt="avatar">
                                                         </div>
-                                                        <!-- Review star -->
-                                                        <div class="icon-md rounded text-bg-warning fs-6">${review.rating}</div>
-                                                    </div>
 
-                                                    <p class="mb-2">${review.comment}</p>
+                                                        <!-- Review Content -->
+                                                        <div class="flex-grow-1">
+                                                            <div class="d-flex justify-content-between">
+                                                                <div>
+                                                                    <h5 class="mb-1">${review.user.fullName} (${review.user.email})</h5>
+                                                                    <h6 class="text-muted mb-2">${review.room.title}: ${review.room.description}</h6>
+                                                                    <ul class="nav nav-divider small mb-2">
+                                                                        <li class="nav-item">
+                                                                            <fmt:formatDate value="${review.createdAtDate}" pattern="dd/MM/yyyy HH:mm:ss" />
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <!-- Rating -->
+                                                                <div class="icon-md rounded text-bg-warning text-center d-flex align-items-center justify-content-center fs-6">
+                                                                    ${review.rating}
+                                                                </div>
+                                                            </div>
 
-                                                    <!-- Images -->
-                                                    <div class="row g-4">
-                                                        <div class="col-4 col-sm-3 col-lg-2">
-                                                            <img src="${pageContext.request.contextPath}/assets/images/category/hotel/4by3/07.jpg" class="rounded" alt="">
-                                                        </div>
-                                                        <div class="col-4 col-sm-3 col-lg-2">
-                                                            <img src="${pageContext.request.contextPath}/assets/images/category/hotel/4by3/08.jpg" class="rounded" alt="">
-                                                        </div>
-                                                        <div class="col-4 col-sm-3 col-lg-2">
-                                                            <img src="${pageContext.request.contextPath}/assets/images/category/hotel/4by3/05.jpg" class="rounded" alt="">
+                                                            <!-- Comment -->
+                                                            <p class="mb-3">${review.comment}</p>
+
+                                                            <!-- Review Images -->
+                                                            <div class="row g-3">
+                                                                <div class="col-4 col-sm-3 col-lg-2">
+                                                                    <img src="${pageContext.request.contextPath}/assets/images/category/hotel/4by3/07.jpg" class="img-fluid rounded" alt="">
+                                                                </div>
+                                                                <div class="col-4 col-sm-3 col-lg-2">
+                                                                    <img src="${pageContext.request.contextPath}/assets/images/category/hotel/4by3/08.jpg" class="img-fluid rounded" alt="">
+                                                                </div>
+                                                                <div class="col-4 col-sm-3 col-lg-2">
+                                                                    <img src="${pageContext.request.contextPath}/assets/images/category/hotel/4by3/05.jpg" class="img-fluid rounded" alt="">
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </c:forEach>
+
                                     </div>
                                     <!-- Card body END -->
                                 </div>

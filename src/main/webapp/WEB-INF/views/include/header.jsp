@@ -1,9 +1,8 @@
 <%-- 
     Document   : header
-    Created on : Feb 28, 2025, 2:27:21 PM
+    Created on : Feb 28, 2025, 2:27:21 PM
     Author     : Thanh Duoc
 --%>
-
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -12,15 +11,11 @@
     <nav class="navbar navbar-expand-xl">
         <div class="container">
             <!-- Logo START -->
-            <!--            <a class="navbar-brand" href="index.html">
-                            <img class="light-mode-item navbar-brand-item" src="${pageContext.request.contextPath}/assets/images/logo.png" alt="logo" style="width: 200px;height: 200px;">
-                        </a>
-            -->                        
             <a class="navbar-brand" href="${pageContext.request.contextPath}/home">
-                <img style="height: 150px" class="light-mode-item navbar-brand-item" src="${pageContext.request.contextPath}/assets/images/logo.png" alt="logo"  z  >
+                <img style="height: 80px; width: auto;" class="light-mode-item navbar-brand-item" src="${pageContext.request.contextPath}/assets/images/logo.png" alt="logo">
             </a>
             <a class="navbar-brand" href="${pageContext.request.contextPath}/home">
-                <img style="height: 150px" class="dark-mode-item navbar-brand-item" src="${pageContext.request.contextPath}/assets/images/logo.png" alt="logo"  z  >
+                <img style="height: 80px; width: auto;" class="dark-mode-item navbar-brand-item" src="${pageContext.request.contextPath}/assets/images/logo.png" alt="logo">
             </a>
             <!-- Logo END -->
 
@@ -36,49 +31,55 @@
                 <span class="d-none d-sm-inline-block small">Menu</span>
             </button>
 
-            <!-- Responsive category toggler -->
-            <button class="navbar-toggler ms-sm-auto mx-3 me-md-0 p-0 p-sm-2" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#navbarCategoryCollapse"
-                    aria-controls="navbarCategoryCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="bi bi-grid-3x3-gap-fill fa-fw"></i><span
-                    class="d-none d-sm-inline-block small">Category</span>
-            </button>
-
             <!-- Main navbar START -->
             <div class="navbar-collapse collapse" id="navbarCollapse">
                 <ul class="navbar-nav navbar-nav-scroll me-auto">
-
-
                     <li class="nav-item">
-                        <a class="nav-link" href="/boarding-house/houseList" id="listingMenu" 
-                           aria-haspopup="true" aria-expanded="false">Danh sách phòng trọ</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/home">
+                            <i class="bi bi-house-door fa-fw me-2"></i>Trang chủ
+                        </a>
                     </li>
-
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/boarding-house/houseList" id="listingMenu">
+                            <i class="bi bi-building fa-fw me-2"></i>Danh sách phòng trọ
+                        </a>
+                    </li>
+                    <c:if test="${not empty USER && USER.role == 'owner'}">
+                        <li class="nav-item">
+                            <a class="nav-link" href="${pageContext.request.contextPath}/user/profile">
+                                <i class="bi bi-gear fa-fw me-2"></i>Quản lý nhà trọ
+                            </a>
+                        </li>
+                    </c:if>
                 </ul>
+
+                <!-- Right side navigation for guest users -->
+                <c:if test="${empty USER}">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="${pageContext.request.contextPath}/signup">
+                                <i class="bi bi-person-plus fa-fw me-2"></i>Đăng ký
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="${pageContext.request.contextPath}/login">
+                                <i class="bi bi-box-arrow-in-right fa-fw me-2"></i>Đăng nhập
+                            </a>
+                        </li>
+                    </ul>
+                </c:if>
             </div>
             <!-- Main navbar END -->
 
-            <!-- Nav category menu START -->
-
-
-            <c:if test="${empty USER}">
-                <div class="navbar-collapse collapse" id="navbarCategoryCollapse">
-                    <ul class="navbar-nav navbar-nav-scroll nav-pills-primary-soft text-center ms-auto p-2 p-xl-0">
-                        <!-- Nav item Hotel -->
-                        <li class="nav-item"> <a class="nav-link active" href="${pageContext.request.contextPath}/signup">Sign Up</a> </li>
-                        <li class="nav-item"> <a class="nav-link active" href="${pageContext.request.contextPath}/login">Login</a> </li>
-
-                    </ul>
-                </div>
-            </c:if>
+            <!-- Profile section for logged-in users -->
             <c:if test="${not empty USER}">
-                <!-- Nav category menu END -->
-
-                <!-- Profile and Notification START -->
                 <ul class="nav flex-row align-items-center list-unstyled ms-xl-auto">
-
-
+                    <!-- Notification icon (optional) -->
+                    <li class="nav-item ms-2">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/notifications" title="Thông báo">
+                            <i class="bi bi-bell fa-fw"></i>
+                        </a>
+                    </li>
 
                     <!-- Profile dropdown START -->
                     <li class="nav-item ms-3 dropdown">
@@ -102,34 +103,57 @@
                                     <div>
                                         <a class="h6 mt-2 mt-sm-0" href="#">${USER.username}</a>
                                         <p class="small m-0">${USER.email}</p>
+                                        <span class="badge bg-primary">${USER.role}</span>
                                     </div>
                                 </div>
                             </li>
 
                             <!-- Links -->
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <c:if test="${USER.role =='tenant'}">
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/booking"><i class="bi bi-bookmark-check fa-fw me-2"></i>My
-                                        Bookings</a></li>
-                                    </c:if>
-                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/profile"><i class="bi bi-gear fa-fw me-2"></i>Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
 
-                            <li><a class="dropdown-item bg-danger-soft-hover" href="/logout"><i
-                                        class="bi bi-power fa-fw me-2"></i>Sign Out</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
+                            <!-- Profile link for all users -->
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/profile">
+                                    <i class="bi bi-person fa-fw me-2"></i>Hồ sơ cá nhân</a>
                             </li>
 
+                            <!-- Tenant specific links -->
+                            <c:if test="${USER.role == 'tenant'}">
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/booking">
+                                        <i class="bi bi-bookmark-check fa-fw me-2"></i>Đặt phòng của tôi</a>
+                                </li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/favorites">
+                                        <i class="bi bi-heart fa-fw me-2"></i>Yêu thích</a>
+                                </li>
+                            </c:if>
 
+                            <!-- Landlord specific links -->
+                            <c:if test="${USER.role == 'landlord'}">
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/landlord/dashboard">
+                                        <i class="bi bi-speedometer2 fa-fw me-2"></i>Bảng điều khiển</a>
+                                </li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/landlord/manage-houses">
+                                        <i class="bi bi-building fa-fw me-2"></i>Quản lý nhà trọ</a>
+                                </li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/landlord/bookings">
+                                        <i class="bi bi-calendar-check fa-fw me-2"></i>Đơn đặt phòng</a>
+                                </li>
+                            </c:if>
+
+                            <!-- Settings -->
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/settings">
+                                    <i class="bi bi-gear fa-fw me-2"></i>Cài đặt</a>
+                            </li>
+
+                            <!-- Logout -->
+                            <li><a class="dropdown-item bg-danger-soft-hover" href="${pageContext.request.contextPath}/logout">
+                                    <i class="bi bi-power fa-fw me-2"></i>Đăng xuất</a>
+                            </li>
                         </ul>
                     </li>
                     <!-- Profile dropdown END -->
                 </ul>
             </c:if>
-            <!-- Profile and Notification START -->
-
         </div>
     </nav>
     <!-- Logo Nav END -->

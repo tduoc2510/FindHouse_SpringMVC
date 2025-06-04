@@ -6,17 +6,25 @@ package controllers.url;
 
 import controllers.service.BoardingHouseService;
 import controllers.service.BookingRequestService;
+import controllers.service.EmailService;
+import controllers.service.OwnerProfileService;
 import controllers.service.ReviewService;
+import controllers.service.RoomImageService;
 import controllers.service.RoomService;
 import controllers.service.UserService;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 import model.entity.BoardingHouse;
 import model.entity.BookingRequest;
+import model.entity.OwnerProfile;
 import model.entity.Review;
+import model.entity.RoomImage;
 import model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,6 +56,13 @@ public class UserController {
 
     @Autowired
     private ReviewService reviewService;
+
+    @Autowired
+    private OwnerProfileService ownerProfileService;
+    @Autowired
+    private RoomImageService roomImageService;
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/profile")
     public String home(Model model, HttpSession session) {
@@ -134,6 +149,59 @@ public class UserController {
         session.setAttribute("USER", userService.getUserById(id));
 
         return "redirect:/user/profile"; // Quay lại trang profile sau khi cập nhật
+    }
+
+    @GetMapping("/ownerListing")
+    public String getOwnerListing(HttpSession session, Model model) throws MessagingException {
+        User user = (User) session.getAttribute("USER");
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        // Lấy toàn bộ OwnerProfile
+        List<OwnerProfile> profiles = ownerProfileService.getProfilesByOwnerId(user.getId());
+        model.addAttribute("profile", profiles);
+
+        // Lấy danh sách BoardingHouse từ các OwnerProfile
+        List<BoardingHouse> boardingHouses = new ArrayList<>();
+        for (OwnerProfile profile : profiles) {
+            List<BoardingHouse> houses = boardingHouseService.getBoardingHousesByProfileId(profile.getId());
+            boardingHouses.addAll(houses);
+        }
+        model.addAttribute("boardingHouses", boardingHouses);
+
+        // Lấy tất cả RoomImage từ các BoardingHouse và lưu theo từng houseId
+        Map<Integer, List<RoomImage>> imagesByHouse = new HashMap<>();
+        for (BoardingHouse house : boardingHouses) {
+            List<RoomImage> houseImages = roomImageService.getAllImagesFromBoardingHouse(house.getId());
+            imagesByHouse.put(house.getId(), houseImages);
+        }
+        model.addAttribute("imagesByHouse", imagesByHouse);
+
+        // Lấy các yêu cầu booking của user hiện tại
+        List<BookingRequest> bookingRequests = bookingRequestService.getBookingRequestsByUserId(user.getId());
+        model.addAttribute("bookingRequests", bookingRequests);
+        emailService.sendOwnerProfileCreatedEmail(user.getEmail(), user.getFullName());
+
+        return "user/ownerListing";
+    }
+
+    @GetMapping("/ownerProfile/listing")
+    public String getOwnerProfileListing(Model model, HttpSession session) {
+        // Kiểm tra quyền (nếu cần): ví dụ là admin hay moderator
+        User currentUser = (User) session.getAttribute("USER");
+        if (currentUser == null || !currentUser.getRole().equals("admin")) {
+            return "redirect:/login"; // hoặc trả về lỗi 403 nếu cần
+        }
+
+        // Lấy toàn bộ OwnerProfile
+        List<OwnerProfile> ownerProfiles = ownerProfileService.getAllProfiles();
+
+        
+
+        model.addAttribute("ownerProfiles", ownerProfiles);
+
+        return "user/staffListing";
     }
 
 }

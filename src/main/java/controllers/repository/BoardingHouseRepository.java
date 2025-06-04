@@ -11,6 +11,8 @@ package controllers.repository;
 import java.math.BigDecimal;
 import java.util.List;
 import model.entity.BoardingHouse;
+import model.entity.Room;
+import model.entity.RoomImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -33,5 +35,16 @@ public interface BoardingHouseRepository extends JpaRepository<BoardingHouse, In
             @Param("minPrice") BigDecimal minPrice,
             @Param("maxPrice") BigDecimal maxPrice
     );
+
+    @Query("SELECT DISTINCT i FROM RoomImage i "
+            + "JOIN i.room r "
+            + "JOIN r.house h "
+            + "WHERE h.id = :houseId")
+    List<RoomImage> findAllImagesByHouseId(@Param("houseId") int houseId);
+
+    @Query("SELECT r FROM Room r LEFT JOIN FETCH r.images WHERE r.house.id = :houseId")
+    List<Room> findByHouse_Id(@Param("houseId") int houseId);
+
+    List<BoardingHouse> findByProfile_Id(int profileId);
 
 }

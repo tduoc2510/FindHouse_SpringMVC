@@ -63,6 +63,4 @@ public class RoomImage {
         this.createdAt = createdAt;
     }
 
-    
-
 }

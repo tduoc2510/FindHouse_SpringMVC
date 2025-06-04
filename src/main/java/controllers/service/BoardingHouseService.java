@@ -14,6 +14,7 @@ import controllers.repository.RoomImageRepository;
 import controllers.repository.RoomRepository;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import model.entity.BoardingHouse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,6 +107,27 @@ public class BoardingHouseService {
         return totalReviews > 0 ? sumRatings / totalReviews : 0.0;
     }
 
+    public Map<String, Object> getRatingStatsByHouseId(Integer houseId) {
+        List<Room> rooms = roomRepository.findByHouse_Id(houseId);
+        int totalReviews = 0;
+        double sumRatings = 0.0;
+
+        for (Room room : rooms) {
+            List<Review> reviews = reviewRepository.findByRoomId(room.getId());
+            for (Review review : reviews) {
+                sumRatings += review.getRating();
+                totalReviews++;
+            }
+        }
+
+        double averageRating = totalReviews > 0 ? sumRatings / totalReviews : 0.0;
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("averageRating", averageRating);
+        result.put("totalReviews", totalReviews);
+        return result;
+    }
+
     public List<BoardingHouse> searchBoardingHouses(String name, String address, BigDecimal minPrice, BigDecimal maxPrice, Double minRating) {
         List<BoardingHouse> houses = boardingHouseRepository.searchBoardingHouses(name, address, minPrice, maxPrice);
 
@@ -146,6 +168,19 @@ public class BoardingHouseService {
                         (oldValue, newValue) -> oldValue, // Merge function
                         LinkedHashMap::new // Đảm bảo giữ thứ tự
                 ));
+    }
+
+    public List<RoomImage> getAllImagesFromBoardingHouse(int houseId) {
+        List<Room> rooms = roomRepository.findByHouse_Id(houseId); // đảm bảo images được nạp (EAGER hoặc JOIN FETCH)
+        List<RoomImage> allImages = new ArrayList<>();
+        for (Room room : rooms) {
+            allImages.addAll(room.getImages());
+        }
+        return allImages;
+    }
+
+    public List<BoardingHouse> getBoardingHousesByProfileId(int profileId) {
+        return boardingHouseRepository.findByProfile_Id(profileId);
     }
 
 }

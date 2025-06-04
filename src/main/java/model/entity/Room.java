@@ -56,6 +56,17 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Amenity> amenities = new ArrayList<>();
 
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<RoomImage> images = new ArrayList<>();
+
+    public List<RoomImage> getImages() {
+        return images;
+    }
+
+    public void setImages(List<RoomImage> images) {
+        this.images = images;
+    }
+
     // Getters and setters
     public Integer getId() {
         return id;

@@ -1,17 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model.entity;
 
-/**
- *
- * @author Thanh Duoc
- */
 import javax.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
+import java.util.Date;
+import java.util.List;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "OwnerProfiles")
@@ -33,13 +28,23 @@ public class OwnerProfile {
     private String ownershipContract;
 
     @Column(name = "approved")
-    private Boolean approved = false;
+    private String approved = "PENDING"; // Hoặc "APPROVED", "REJECTED"
+    @Column(name = "reason")
+    private String reason; // Hoặc "APPROVED", "REJECTED"
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
-    // Getters and setters...
+    // ⚠️ Thêm ánh xạ với BoardingHouses
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<BoardingHouse> boardingHouses;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Instant updatedAt;
+
+    // Getters và Setters
     public Integer getId() {
         return id;
     }
@@ -72,12 +77,20 @@ public class OwnerProfile {
         this.ownershipContract = ownershipContract;
     }
 
-    public Boolean getApproved() {
+    public String getApproved() {
         return approved;
     }
 
-    public void setApproved(Boolean approved) {
+    public void setApproved(String approved) {
         this.approved = approved;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public Instant getCreatedAt() {
@@ -86,6 +99,30 @@ public class OwnerProfile {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<BoardingHouse> getBoardingHouses() {
+        return boardingHouses;
+    }
+
+    public void setBoardingHouses(List<BoardingHouse> boardingHouses) {
+        this.boardingHouses = boardingHouses;
+    }
+
+    public Date getCreatedAtDate() {
+        return createdAt != null ? Date.from(createdAt) : null;
+    }
+
+    public Date getUpdatedAtAsDate() {
+        return updatedAt != null ? Date.from(updatedAt) : null;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
     }
 
 }

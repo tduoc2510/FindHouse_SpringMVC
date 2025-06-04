@@ -4,6 +4,7 @@
  */
 package controllers.service;
 
+import controllers.repository.BoardingHouseRepository;
 import controllers.repository.RoomImageRepository;
 import java.util.HashMap;
 import java.util.List;
@@ -19,5 +20,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RoomImageService {
+
+    @Autowired
+    private RoomImageRepository roomImageRepository;
+
+    public List<RoomImage> getAllImagesFromBoardingHouse(int houseId) {
+        return roomImageRepository.findAllByHouseId(houseId);
+    }
 
 }

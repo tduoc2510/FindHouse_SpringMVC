@@ -1,6 +1,6 @@
 <%-- 
     Document   : signUp
-    Created on : Mar 2, 2025, 3:19:32 PM
+    Created on : Mar 2, 2025, 3:19:32 PM
     Author     : Thanh Duoc
 --%>
 
@@ -8,410 +8,389 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-
 <!DOCTYPE html>
 <html lang="en">
-
-    <!-- Mirrored from stackbros.in/bookinga/landing/sign-up.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 14 Jan 2025 15:03:39 GMT -->
     <%@include file="../include/head.jsp" %>
 
     <body>
-
-        <!-- **************** MAIN CONTENT START **************** -->        
+        <!-- MAIN CONTENT START -->        
         <%@include file="../include/header.jsp" %>
 
         <main>
+            <!-- Menu item START -->
+            <%@include file="user.include/ownerNavbar.jsp" %>
+            <!-- Menu item END -->
 
-            <!-- =======================
-            Menu item START -->
-            <section class="pt-4">
+            <!-- Content START -->
+            <section class="py-4 bg-light">
                 <div class="container">
-                    <div class="card rounded-3 border p-3 pb-2">
-                        <!-- Avatar and info START -->
-                        <div class="d-sm-flex align-items-center">
-                            <div class="avatar avatar-xl mb-2 mb-sm-0">
-                                <img class="avatar-img rounded-circle" src="${pageContext.request.contextPath}/assets/images/avatar/01.jpg" alt="">
-                            </div>
-                            <h4 class="mb-2 mb-sm-0 ms-sm-3"><span class="fw-light">Hi</span> ${USER.fullName}</h4>
-                            <a href="add-listing.html" class="btn btn-sm btn-primary-soft mb-0 ms-auto flex-shrink-0"><i class="bi bi-plus-lg fa-fw me-2"></i>Add New Listing</a>
-                        </div>
-                        <!-- Avatar and info START -->
 
-                        <!-- Responsive navbar toggler -->
-                        <button class="btn btn-primary w-100 d-block d-xl-none mt-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#dashboardMenu" aria-controls="dashboardMenu">
-                            <i class="bi bi-list"></i> Dashboard Menu
-                        </button>
-
-                        <!-- Nav links START -->
-                        <div class="offcanvas-xl offcanvas-end mt-xl-3" tabindex="-1" id="dashboardMenu">
-                            <div class="offcanvas-header border-bottom p-3">
-                                <h5 class="offcanvas-title">Menu</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#dashboardMenu" aria-label="Close"></button>
-                            </div>
-                            <!-- Offcanvas body -->
-                            <div class="offcanvas-body p-3 p-xl-0">
-                                <!-- Nav item -->
-                                <div class="navbar navbar-expand-xl">
-                                    <ul class="navbar-nav navbar-offcanvas-menu">
-
-                                        <li class="nav-item"> <a class="nav-link active" href="agent-dashboard.html"><i class="bi bi-house-door fa-fw me-1"></i>Dashboard</a>	</li>
-
-                                        <li class="nav-item"> <a class="nav-link" href="agent-listings.html"><i class="bi bi-journals fa-fw me-1"></i>Listings</a> </li>
-
-                                        <!--<li class="nav-item"> <a class="nav-link" href="agent-bookings.html"><i class="bi bi-bookmark-heart fa-fw me-1"></i>Bookings</a> </li>-->
-
-                                        <!--<li class="nav-item"> <a class="nav-link" href="agent-activities.html"><i class="bi bi-bell fa-fw me-1"></i>Activities</a> </li>-->
-
-                                        <!--<li class="nav-item"> <a class="nav-link" href="agent-earnings.html"><i class="bi bi-graph-up-arrow fa-fw me-1"></i>Earnings</a>	</li>-->
-
-                                        <!--<li class="nav-item"> <a class="nav-link" href="agent-reviews.html"><i class="bi bi-star fa-fw me-1"></i>Reviews</a></li>-->
-
-                                        <!--<li> <a class="nav-link" href="agent-settings.html"><i class="bi bi-gear fa-fw me-1"></i>Settings</a></li>-->
-
-                                        <!--                                        <li class="nav-item dropdown">
-                                                                                    <a class="nav-link dropdown-toggle" href="#" id="dropdoanMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                        <i class="bi bi-list-ul fa-fw me-1"></i>Dropdown
-                                                                                    </a>
-                                                                                    <ul class="dropdown-menu" aria-labelledby="dropdoanMenu">
-                                                                                         Dropdown menu 
-                                                                                        <li> <a class="dropdown-item" href="#">Item 1</a></li>
-                                                                                        <li> <a class="dropdown-item" href="#">Item 2</a></li>
-                                                                                    </ul>
-                                                                                </li>		-->
-                                    </ul>
+                    <!-- Page Header -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="bi bi-house-door text-primary fs-4"></i>
+                                </div>
+                                <div>
+                                    <h1 class="h3 mb-1 text-white">Dashboard</h1>
+                                    <p class="text-muted mb-0">Tổng quan về hoạt động của bạn</p>
                                 </div>
                             </div>
                         </div>
-                        <!-- Nav links END -->
                     </div>
-                </div>
-            </section>
-            <!-- =======================
-            Menu item END -->
 
-            <!-- =======================
-            Content START -->
-            <section class="pt-0">
-                <div class="container vstack gap-4">
-                    <!-- Title START -->
-                    <div class="row">
+                    <!-- Statistics Section -->
+                    <div class="row mb-4">
                         <div class="col-12">
-                            <h1 class="fs-4 mb-0"><i class="bi bi-house-door fa-fw me-1"></i>Dashboard</h1>
-                        </div>
-                    </div>	
-                    <!-- Title END -->
-                    <div class="bg-secondary text-white p-4 rounded" style=" height: 300px;">
-                        <h5 class="text-center">Chỗ Này Làm Thống kê</h5>
-                        <div class="row g-4">
-                            <!-- Nội dung thống kê ở đây -->
-                        </div>
-                    </div>
-                    <!-- Counter START -->
-                    <!--                    <div class="row g-4">
-                                             Counter item 
-                                            <div class="col-sm-6 col-xl-3">
-                                                <div class="card card-body border">
-                                                    <div class="d-flex align-items-center">
-                                                         Icon 
-                                                        <div class="icon-xl bg-success rounded-3 text-white">
-                                                            <i class="bi bi-journals"></i>
-                                                        </div>
-                                                         Content 
-                                                        <div class="ms-3">
-                                                            <h4>56</h4>
-                                                            <span>Total Listings</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                    
-                                             Counter item 
-                                            <div class="col-sm-6 col-xl-3">
-                                                <div class="card card-body border">
-                                                    <div class="d-flex align-items-center">
-                                                         Icon 
-                                                        <div class="icon-xl bg-info rounded-3 text-white">
-                                                            <i class="bi bi-graph-up-arrow"></i>
-                                                        </div>
-                                                         Content 
-                                                        <div class="ms-3">
-                                                            <h4>$2,55,365</h4>
-                                                            <span>Earning</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                    
-                                             Counter item 
-                                            <div class="col-sm-6 col-xl-3">
-                                                <div class="card card-body border">
-                                                    <div class="d-flex align-items-center">
-                                                         Icon 
-                                                        <div class="icon-xl bg-warning rounded-3 text-white">
-                                                            <i class="bi bi-bar-chart-line-fill"></i>
-                                                        </div>
-                                                         Content 
-                                                        <div class="ms-3">
-                                                            <h4>15K</h4>
-                                                            <span>Visitors</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                    
-                                             Counter item 
-                                            <div class="col-sm-6 col-xl-3">
-                                                <div class="card card-body border">
-                                                    <div class="d-flex align-items-center">
-                                                         Icon 
-                                                        <div class="icon-xl bg-primary rounded-3 text-white">
-                                                            <i class="bi bi-star"></i>
-                                                        </div>
-                                                         Content 
-                                                        <div class="ms-3">
-                                                            <h4>12K</h4>
-                                                            <span>Total Reviews</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>-->
-                    <!-- Counter END -->
-
-
-
-                    <!-- Booking table START -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card border rounded-3">
-                                <!-- Card header START -->
-                                <div class="card-header border-bottom">
-                                    <div class="d-sm-flex justify-content-between align-items-center">
-                                        <h5 class="mb-2 mb-sm-0">Upcoming Bookings</h5>
-                                        <a href="#" class="btn btn-sm btn-primary mb-0">View All</a>
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                        <h5 class="mb-0 text-primary">
+                                            <i class="bi bi-graph-up me-2"></i>Thống kê tổng quan
+                                        </h5>
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                Tháng này
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#">Hôm nay</a></li>
+                                                <li><a class="dropdown-item" href="#">Tuần này</a></li>
+                                                <li><a class="dropdown-item" href="#">Tháng này</a></li>
+                                                <li><a class="dropdown-item" href="#">Năm nay</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- Card header END -->
 
-                                <!-- Card body START -->
-                                <div class="card-body">
-                                    <!-- Search and select START -->
-                                    <div class="row g-3 align-items-center justify-content-between mb-3">
-                                        <!-- Search -->
-                                        <div class="col-md-8">
-                                            <form class="rounded position-relative">
-                                                <input class="form-control pe-5" type="search" placeholder="Search" aria-label="Search">
-                                                <button class="btn border-0 px-3 py-0 position-absolute top-50 end-0 translate-middle-y" type="submit"><i class="fas fa-search fs-6"></i></button>
-                                            </form>
+                                    <!-- Statistics Grid -->
+                                    <div class="row g-4">
+                                        <!-- Total Listings -->
+                                        <div class="col-sm-6 col-xl-3">
+                                            <div class="d-flex align-items-center p-3 bg-success bg-opacity-10 rounded-3">
+                                                <div class="bg-success rounded-circle p-3 me-3">
+                                                    <i class="bi bi-journals text-white fs-5"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="mb-0 text-success">56</h4>
+                                                    <small class="text-muted">Tổng số phòng</small>
+                                                </div>
+                                            </div>
                                         </div>
 
-                                        <!-- Select option -->
-                                        <div class="col-md-3">
-                                            <!-- Short by filter -->
-                                            <form>
-                                                <select class="form-select js-choice" aria-label=".form-select-sm">
-                                                    <option value="">Sort by</option>
-                                                    <option>Free</option>
-                                                    <option>Newest</option>
-                                                    <option>Oldest</option>
+                                        <!-- Earnings -->
+                                        <div class="col-sm-6 col-xl-3">
+                                            <div class="d-flex align-items-center p-3 bg-info bg-opacity-10 rounded-3">
+                                                <div class="bg-info rounded-circle p-3 me-3">
+                                                    <i class="bi bi-graph-up-arrow text-white fs-5"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="mb-0 text-info">2,55M VNĐ</h4>
+                                                    <small class="text-muted">Doanh thu</small>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Visitors -->
+                                        <div class="col-sm-6 col-xl-3">
+                                            <div class="d-flex align-items-center p-3 bg-warning bg-opacity-10 rounded-3">
+                                                <div class="bg-warning rounded-circle p-3 me-3">
+                                                    <i class="bi bi-bar-chart-line-fill text-white fs-5"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="mb-0 text-warning">15K</h4>
+                                                    <small class="text-muted">Lượt xem</small>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Reviews -->
+                                        <div class="col-sm-6 col-xl-3">
+                                            <div class="d-flex align-items-center p-3 bg-primary bg-opacity-10 rounded-3">
+                                                <div class="bg-primary rounded-circle p-3 me-3">
+                                                    <i class="bi bi-star text-white fs-5"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="mb-0 text-primary">12K</h4>
+                                                    <small class="text-muted">Đánh giá</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Booking Management -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm">
+                                <!-- Card Header -->
+                                <div class="card-header bg-opacity-10 border-bottom py-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5 class="mb-1 text-primary">
+                                                <i class="bi bi-calendar-check me-2"></i>Yêu cầu đặt phòng
+                                            </h5>
+                                            <small class="text-muted">Quản lý các yêu cầu đặt phòng từ khách hàng</small>
+                                        </div>
+                                        <a href="#" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-eye me-1"></i>Xem tất cả
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Card Body -->
+                                <div class="card-body p-0">
+                                    <!-- Search and Filter -->
+                                    <div class="p-4 bg-light border-bottom">
+                                        <div class="row g-3 align-items-center">
+                                            <!-- Search -->
+                                            <div class="col-md-8">
+                                                <form class="rounded position-relative">
+                                                    <input class="form-control pe-5" type="search" placeholder="Search" aria-label="Search">
+                                                    <button class="btn border-0 px-3 py-0 position-absolute top-50 end-0 translate-middle-y" type="submit"><i class="fas fa-search fs-6"></i></button>
+                                                </form>
+                                            </div>
+
+                                            <!-- Filter -->
+                                            <div class="col-md-4">
+                                                <select class="form-select">
+                                                    <option value="">Tất cả trạng thái</option>
+                                                    <option value="pending">Chờ xác nhận</option>
+                                                    <option value="confirm1">Chờ chủ trọ</option>
+                                                    <option value="confirm2">Chờ thanh toán</option>
+                                                    <option value="confirm3">Đã xác nhận</option>
+                                                    <option value="rejected">Từ chối</option>
                                                 </select>
-                                            </form>
+                                            </div>
                                         </div>
                                     </div>
-                                    <!-- Search and select END -->
 
-                                    <!-- Hotel room list START -->
-                                    <div class="table-responsive border-0">
-                                        <table class="table align-middle p-4 mb-0 table-hover table-shrink">
-                                            <!-- Table head -->
+                                    <!-- Table -->
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle mb-0">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th scope="col" class="border-0 rounded-start">#</th>
-                                                    <th scope="col" class="border-0">Tên người đặt</th>
-                                                    <th scope="col" class="border-0">Số điện thoại</th>
-                                                    <th scope="col" class="border-0">Phòng</th>
-                                                    <th scope="col" class="border-0">Giá phòng</th>
-                                                    <th scope="col" class="border-0">Ngày đăng ký</th>
-                                                    <th scope="col" class="border-0">Ngày hẹn xem phòng</th>
-
-                                                    <th scope="col" class="border-0">Trạng thái</th>
-                                                    <th scope="col" class="border-0 rounded-end">Action</th>
+                                                    <th class="border-0 rounded-start px-4">#</th>
+                                                    <th class="border-0">Khách hàng</th>
+                                                    <th class="border-0">Liên hệ</th>
+                                                    <th class="border-0">Phòng</th>
+                                                    <th class="border-0">Giá</th>
+                                                    <th class="border-0">Ngày đăng ký</th>
+                                                    <th class="border-0">Ngày xem phòng</th>
+                                                    <th class="border-0">Trạng thái</th>
+                                                    <th class="border-0 rounded-end text-center">Thao tác</th>
                                                 </tr>
                                             </thead>
-
-                                            <!-- Table body START -->
-
-                                            <tbody class="border-top-0">
+                                            <tbody>
                                                 <c:forEach items="${bookingRequests}" var="bookingRequest">
                                                     <tr>
-                                                        <td><h6 class="mb-0">${bookingRequest.id}</h6></td>
-                                                        <td><h6 class="mb-0"><a href="#">${bookingRequest.user.fullName}</a></h6></td>
+                                                        <td class="px-4">
+                                                            <span class="fw-bold text-primary">#${bookingRequest.id}</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-2">
+                                                                    <i class="bi bi-person text-primary"></i>
+                                                                </div>
+                                                                <div>
+                                                                    <h6 class="mb-0">${bookingRequest.user.fullName}</h6>
+                                                                    <small class="text-muted">Khách hàng</small>
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                         <td>
                                                             <c:choose>
                                                                 <c:when test="${bookingRequest.status == 'confirm3'}">
-                                                                    <div class="badge bg-success bg-opacity-10 text-success">
+                                                                    <span class="badge bg-success bg-opacity-20 text-success px-3 py-2">
+                                                                        <i class="bi bi-telephone me-1"></i>
                                                                         ${bookingRequest.user.phoneNumber}
-                                                                    </div>
+                                                                    </span>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                    <div class="badge bg-success bg-opacity-10 text-success">
-                                                                        ${fn:substring(bookingRequest.user.phoneNumber, 0, 3)}******
-                                                                    </div>
+                                                                    <span class="badge bg-secondary bg-opacity-20 text-secondary px-3 py-2">
+                                                                        <i class="bi bi-eye-slash me-1"></i>
+                                                                        ${fn:substring(bookingRequest.user.phoneNumber, 0, 3)}***
+                                                                    </span>
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </td>
-                                                        <td>${bookingRequest.room.title}</td>
                                                         <td>
-                                                            <fmt:formatNumber value="${bookingRequest.room.price}" /> VNĐ
+                                                            <div>
+                                                                <h6 class="mb-0">${bookingRequest.room.title}</h6>
+                                                                <small class="text-muted">Phòng trọ</small>
+                                                            </div>
                                                         </td>
                                                         <td>
-                                                            <fmt:formatDate value="${bookingRequest.requestedAtAsDate}" pattern="dd/MM/yyyy HH:mm:ss" />
+                                                            <span class="fw-bold text-success">
+                                                                <fmt:formatNumber value="${bookingRequest.room.price}" /> VNĐ
+                                                            </span>
                                                         </td>
                                                         <td>
-                                                            <fmt:formatDate value="${bookingRequest.viewingDateAsDate}" pattern="dd/MM/yyyy HH:mm:ss" />
+                                                            <div>
+                                                                <div class="fw-medium">
+                                                                    <fmt:formatDate value="${bookingRequest.requestedAtAsDate}" pattern="dd/MM/yyyy" />
+                                                                </div>
+                                                                <small class="text-muted">
+                                                                    <fmt:formatDate value="${bookingRequest.requestedAtAsDate}" pattern="HH:mm" />
+                                                                </small>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div>
+                                                                <div class="fw-medium">
+                                                                    <fmt:formatDate value="${bookingRequest.viewingDateAsDate}" pattern="dd/MM/yyyy" />
+                                                                </div>
+                                                                <small class="text-muted">
+                                                                    <fmt:formatDate value="${bookingRequest.viewingDateAsDate}" pattern="HH:mm" />
+                                                                </small>
+                                                            </div>
                                                         </td>
                                                         <td>
                                                             <c:choose>
                                                                 <c:when test="${bookingRequest.status == 'pending'}">
-                                                                    <div class="badge text-bg-warning">Đang chờ xác nhận</div>
+                                                                    <span class="badge bg-warning text-dark px-3 py-2">
+                                                                        <i class="bi bi-clock me-1"></i>Chờ xác nhận
+                                                                    </span>
                                                                 </c:when>
                                                                 <c:when test="${bookingRequest.status == 'confirm1'}">
-                                                                    <div class="badge text-bg-warning">Đang đợi chủ trọ xác nhận</div>
+                                                                    <span class="badge bg-info text-white px-3 py-2">
+                                                                        <i class="bi bi-hourglass me-1"></i>Chờ chủ trọ
+                                                                    </span>
                                                                 </c:when>
                                                                 <c:when test="${bookingRequest.status == 'confirm2'}">
-                                                                    <div class="badge text-bg-warning">Đang chờ khách thanh toán</div>
+                                                                    <span class="badge bg-primary text-white px-3 py-2">
+                                                                        <i class="bi bi-credit-card me-1"></i>Chờ thanh toán
+                                                                    </span>
                                                                 </c:when>
                                                                 <c:when test="${bookingRequest.status == 'confirm3'}">
-                                                                    <div class="badge text-bg-success">Đã xác nhận</div>
+                                                                    <span class="badge bg-success text-white px-3 py-2">
+                                                                        <i class="bi bi-check-circle me-1"></i>Đã xác nhận
+                                                                    </span>
                                                                 </c:when>
                                                                 <c:when test="${bookingRequest.status == 'rejected'}">
-                                                                    <div class="badge text-bg-danger">Từ chối</div>
+                                                                    <span class="badge bg-danger text-white px-3 py-2">
+                                                                        <i class="bi bi-x-circle me-1"></i>Từ chối
+                                                                    </span>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                    <div class="badge text-bg-danger">${bookingRequest.status}</div>
+                                                                    <span class="badge bg-secondary text-white px-3 py-2">
+                                                                        ${bookingRequest.status}
+                                                                    </span>
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </td>
-                                                        <td>
+                                                        <td class="text-center">
                                                             <c:choose>
                                                                 <c:when test="${bookingRequest.status == 'confirm1'}">
-                                                                    <form id="form-${bookingRequest.id}">
-                                                                        <input type="hidden" name="requestId" value="${bookingRequest.id}" />
-                                                                        <input type="hidden" id="status_${bookingRequest.id}" name="status" />
-                                                                        <input type="hidden" id="reason_${bookingRequest.id}" name="reason" />
-
-                                                                        <button type="button" class="btn btn-success" onclick="acceptRequest(${bookingRequest.id})">Accept</button>
-                                                                        <button type="button" class="btn btn-danger" onclick="rejectRequest(${bookingRequest.id})">Reject</button>
-                                                                    </form>
-
+                                                                    <div class="btn-group" role="group">
+                                                                        <button type="button" class="btn btn-success btn-sm" 
+                                                                                onclick="acceptRequest(${bookingRequest.id})"
+                                                                                title="Chấp nhận">
+                                                                            <i class="bi bi-check-lg"></i>
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-danger btn-sm" 
+                                                                                onclick="rejectRequest(${bookingRequest.id})"
+                                                                                title="Từ chối">
+                                                                            <i class="bi bi-x-lg"></i>
+                                                                        </button>
+                                                                    </div>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                    <div class="badge text-bg-secondary">None</div>
+                                                                    <span class="text-muted">
+                                                                        <i class="bi bi-dash-circle"></i>
+                                                                    </span>
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
                                             </tbody>
-
-
-                                            <script>
-                                                function acceptRequest(id) {
-                                                    updateStatus(id, "confirm2", "");
-                                                }
-
-                                                function rejectRequest(id) {
-                                                    const reason = prompt("Vui lòng nhập lý do từ chối:");
-                                                    if (!reason || reason.trim() === "") {
-                                                        alert("Bạn phải nhập lý do!");
-                                                        return;
-                                                    }
-                                                    updateStatus(id, "rejected", reason);
-                                                }
-
-                                                function updateStatus(id, status, reason) {
-                                                    const formData = new FormData();
-                                                    formData.append("requestId", id);
-                                                    formData.append("status", status);
-                                                    formData.append("reason", reason);
-
-                                                    fetch("${pageContext.request.contextPath}/booking/update-status", {
-                                                        method: "POST",
-                                                        body: formData
-                                                    })
-                                                            .then(response => {
-                                                                if (!response.ok)
-                                                                    throw new Error("Lỗi máy chủ");
-                                                                return response.text();
-                                                            })
-                                                            .then(data => {
-                                                                alert("Cập nhật trạng thái thành công!");
-                                                                // Gợi ý: cập nhật UI tại chỗ, hoặc reload một phần bảng
-                                                                location.reload(); // hoặc cập nhật DOM cụ thể
-                                                            })
-                                                            .catch(error => {
-                                                                alert("Đã xảy ra lỗi: " + error.message);
-                                                            });
-                                                }
-                                            </script>
-
-
-
-
-
-                                            <!-- Table body END -->
                                         </table>
                                     </div>
-                                    <!-- Hotel room list END -->
                                 </div>
-                                <!-- Card body END -->
 
-                                <!-- Card footer START -->
-                                <div class="card-footer pt-0">
-                                    <!-- Pagination and content -->
-                                    <div class="d-sm-flex justify-content-sm-between align-items-sm-center">
-                                        <!-- Content -->
-                                        <p class="mb-sm-0 text-center text-sm-start">Showing 1 to 8 of 20 entries</p>
-                                        <!-- Pagination -->
-                                        <nav class="mb-sm-0 d-flex justify-content-center" aria-label="navigation">
-                                            <ul class="pagination pagination-sm pagination-primary-soft mb-0">
+                                <!-- Card Footer -->
+                                <div class="card-footer bg-opacity-10 border-top py-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="text-muted">
+                                            <small>Hiển thị 1 đến 8 trong tổng số 20 mục</small>
+                                        </div>
+                                        <nav aria-label="Pagination">
+                                            <ul class="pagination pagination-sm mb-0">
                                                 <li class="page-item disabled">
-                                                    <a class="page-link" href="#" tabindex="-1">Prev</a>
+                                                    <a class="page-link" href="#" tabindex="-1">
+                                                        <i class="bi bi-chevron-left"></i>
+                                                    </a>
                                                 </li>
                                                 <li class="page-item"><a class="page-link" href="#">1</a></li>
                                                 <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                                                <li class="page-item disabled"><a class="page-link" href="#">..</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">15</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
                                                 <li class="page-item">
-                                                    <a class="page-link" href="#">Next</a>
+                                                    <a class="page-link" href="#">
+                                                        <i class="bi bi-chevron-right"></i>
+                                                    </a>
                                                 </li>
                                             </ul>
                                         </nav>
                                     </div>
                                 </div>
-                                <!-- Card footer END -->
                             </div>
                         </div>
-                    </div>	
-                    <!-- Booking table END -->
+                    </div>
                 </div>
             </section>
-            <!-- =======================
-            Content END -->
+            <!-- Content END -->
 
         </main>
-        <!-- **************** MAIN CONTENT END **************** -->
+        <!-- MAIN CONTENT END -->
 
         <!-- Back to top -->
         <div class="back-top"></div>
 
-        <!-- Bootstrap JS -->
-        <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Include footer -->
+        <%@include file="../include/footer.jsp" %>
 
-        <!-- ThemeFunctions -->
-        <script src="${pageContext.request.contextPath}/assets/js/functions.js"></script>
+        <!-- JavaScript for booking actions -->
+        <script>
+            function acceptRequest(id) {
+                updateStatus(id, "confirm2", "");
+            }
+
+            function rejectRequest(id) {
+                const reason = prompt("Vui lòng nhập lý do từ chối:");
+                if (!reason || reason.trim() === "") {
+                    alert("Bạn phải nhập lý do!");
+                    return;
+                }
+                updateStatus(id, "rejected", reason);
+            }
+
+            function updateStatus(id, status, reason) {
+                const formData = new FormData();
+                formData.append("requestId", id);
+                formData.append("status", status);
+                formData.append("reason", reason);
+
+                fetch("${pageContext.request.contextPath}/booking/update-status", {
+                    method: "POST",
+                    body: formData
+                })
+                        .then(response => {
+                            if (!response.ok)
+                                throw new Error("Lỗi máy chủ");
+                            return response.text();
+                        })
+                        .then(data => {
+                            alert("Cập nhật trạng thái thành công!");
+                            location.reload();
+                        })
+                        .catch(error => {
+                            alert("Đã xảy ra lỗi: " + error.message);
+                        });
+            }
+        </script>
 
     </body>
-
-    <!-- Mirrored from stackbros.in/bookinga/landing/sign-up.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 14 Jan 2025 15:03:39 GMT -->
 </html>

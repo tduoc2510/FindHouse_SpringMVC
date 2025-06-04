@@ -8,6 +8,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Nationalized;
 
 import java.time.Instant;
+import java.util.Date;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import org.hibernate.annotations.CreationTimestamp;
@@ -142,8 +143,15 @@ public class User {
         return updatedAt;
     }
 
+    public Date getCreatedAtDate() {
+        return createdAt != null ? Date.from(createdAt) : null;
+    }
+    public Date getUpdatedAtAsDate() {
+        return updatedAt != null ? Date.from(updatedAt) : null;
+    }
+
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
-    
+
 }

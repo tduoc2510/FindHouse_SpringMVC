@@ -17,10 +17,12 @@
 
         <!-- Cấu hình multipart cho servlet -->
         <multipart-config>
-            <max-file-size>5242880</max-file-size> <!-- 5MB -->
+            <location>/tmp</location>
+            <max-file-size>10485760</max-file-size> <!-- 10MB -->
             <max-request-size>20971520</max-request-size> <!-- 20MB -->
             <file-size-threshold>0</file-size-threshold>
         </multipart-config>
+
     </servlet>
 
     <servlet-mapping>
@@ -67,18 +69,18 @@
     </error-page>
 
     <!-- Đăng ký filter tùy chỉnh -->
-<!--    <filter>
+    <!--    <filter>
         <filter-name>roleBasedFilter</filter-name>
         <filter-class>config.RoleBasedFilter</filter-class>
     </filter>-->
-<!--    <filter-mapping>
+    <!--    <filter-mapping>
         <filter-name>roleBasedFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>-->
 
     <!-- Đăng ký WebSocket Config Listener -->
     <!-- Thêm cấu hình để Spring quản lý WebSocket -->
-<!--    <listener>
+    <!--    <listener>
         <listener-class>org.springframework.web.socket.server.standard.ServerEndpointExporter</listener-class>
     </listener>-->
 

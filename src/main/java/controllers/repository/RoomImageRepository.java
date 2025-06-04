@@ -9,6 +9,8 @@ import model.entity.Review;
 import model.entity.Room;
 import model.entity.RoomImage;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -20,5 +22,9 @@ public interface RoomImageRepository extends JpaRepository<RoomImage, Integer> {
 
     // Lấy danh sách ảnh theo ID phòng
     List<RoomImage> findByRoom_Id(int roomId);
+
+    // Trong RoomImageRepository
+    @Query("SELECT ri FROM RoomImage ri WHERE ri.room.house.id = :houseId")
+    List<RoomImage> findAllByHouseId(@Param("houseId") int houseId);
 
 }

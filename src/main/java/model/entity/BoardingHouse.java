@@ -22,7 +22,7 @@ public class BoardingHouse {
     @JoinColumn(name = "profile_id", nullable = false)
     private OwnerProfile profile;
 
-    @OneToMany(mappedBy = "house", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "house", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Room> rooms = new ArrayList<>();
 
     @Nationalized
@@ -32,8 +32,6 @@ public class BoardingHouse {
     @Nationalized
     @Column(name = "address", nullable = false)
     private String address;
-
-
 
     @Nationalized
     @Column(name = "description", columnDefinition = "NVARCHAR(MAX)")

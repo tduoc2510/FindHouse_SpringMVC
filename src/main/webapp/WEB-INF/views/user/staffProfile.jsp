@@ -1,6 +1,6 @@
 <%-- 
     Document   : signUp
-    Created on : Mar 2, 2025, 3:19:32 PM
+    Created on : Mar 2, 2025, 3:19:32 PM
     Author     : Thanh Duoc
 --%>
 
@@ -20,76 +20,68 @@
         <main>
 
             <!-- Sidebar START -->
-            <nav class="navbar sidebar navbar-expand-xl navbar-light">
-                <!-- Navbar brand for xl START -->
-                <div class="d-flex align-items-center">
-                    <a class="navbar-brand" href="${pageContext.request.contextPath}/home">
-                        <img class="light-mode-item navbar-brand-item" src="assets/images/logo.svg" alt="logo">
-                        <img class="dark-mode-item navbar-brand-item" src="assets/images/logo-light.svg" alt="logo">
-                    </a>
-                </div>
-                <!-- Navbar brand for xl END -->
-
-                <div class="offcanvas offcanvas-start flex-row custom-scrollbar h-100" data-bs-backdrop="true" tabindex="-1" id="offcanvasSidebar">
-                    <div class="offcanvas-body sidebar-content d-flex flex-column pt-4">
-
-                        <!-- Sidebar menu START -->
-                        <ul class="navbar-nav flex-column" id="navbar-sidebar">
-                            <!-- Menu item -->
-                            <li class="nav-item"><a href="${pageContext.request.contextPath}/user/profile" class="nav-link active">Dashboard</a></li>
-
-                            <!-- Title -->
-
-                        </ul>
-                        <!-- Sidebar menu end -->
-
-                        <!-- Sidebar footer START -->
-                        <div class="d-flex align-items-center justify-content-between text-primary-hover mt-auto p-3">
-                            <a class="h6 fw-light mb-0 text-body" href="${pageContext.request.contextPath}/logout" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Sign out">
-                                <i class="fa-solid fa-arrow-right-from-bracket"></i> Log out
-                            </a>
-
-
-                        </div>
-                        <!-- Sidebar footer END -->
-
-                    </div>
-                </div>
-            </nav>
+            <%@include file="user.include/staffSidebar.jsp" %>
             <!-- Sidebar END -->
 
             <!-- Page content START -->
             <div class="page-content">
 
-
-
                 <!-- Page main content START -->
                 <div class="page-content-wrapper p-xxl-4">
 
-                    <!-- Title -->
+                    <!-- Enhanced Header Section -->
                     <div class="row">
                         <div class="col-12 mb-4 mb-sm-5">
-                            <div class="d-sm-flex justify-content-between align-items-center">
-                                <h1 class="h3 mb-2 mb-sm-0">Dashboard</h1>
-                                <div class="d-grid"><a href="#" class="btn btn-primary-soft mb-0"><i class="bi bi-plus-lg fa-fw"></i> New Booking</a></div>				
+                            <!-- Welcome Card -->
+                            <div class="card border-0 bg-primary bg-gradient text-white mb-4">
+                                <div class="card-body p-4">
+                                    <div class="d-sm-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h1 class="h2 mb-2 text-white fw-bold">
+                                                <i class="bi bi-house-door me-2"></i>
+                                                Dashboard Overview
+                                            </h1>
+                                            <p class="mb-0 text-white-50 fs-6">
+                                                <i class="bi bi-calendar3 me-2"></i>
+                                                Welcome back! Here's what's happening with your properties today.
+                                            </p>
+                                        </div>
+                                        <div class="d-grid d-sm-block mt-3 mt-sm-0">
+                                            <a href="#" class="btn btn-light btn-lg shadow-sm">
+                                                <i class="bi bi-plus-lg me-2"></i>
+                                                New Booking
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Counter boxes START -->
+                    <!-- Enhanced Counter boxes START -->
                     <div class="row g-4 mb-5">
                         <!-- Counter item: Total Hotels -->
                         <div class="col-md-4">
-                            <div class="card card-body bg-warning bg-opacity-10 border border-warning border-opacity-25 p-4 h-100">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <!-- Digit -->
-                                    <div>
-                                        <h4 class="mb-0">${contHouse}</h4>
-                                        <span class="h6 fw-light mb-0">Total House</span>
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body bg-warning bg-opacity-10 p-4">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <!-- Digit -->
+                                        <div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="bi bi-arrow-up-right text-success me-2"></i>
+                                                <small class="text-success fw-medium">+12% from last month</small>
+                                            </div>
+                                            <h2 class="mb-1 fw-bold text-white">${contHouse}</h2>
+                                            <span class="text-muted fw-medium">Total Houses</span>
+                                        </div>
+                                        <!-- Icon -->
+                                        <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                            <i class="fa-solid fa-hotel fa-fw text-white fs-4"></i>
+                                        </div>
                                     </div>
-                                    <!-- Icon -->
-                                    <div class="icon-lg rounded-circle bg-warning text-white mb-0">
-                                        <i class="fa-solid fa-hotel fa-fw"></i>
+                                    <!-- Progress bar -->
+                                    <div class="progress mt-3" style="height: 4px;">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 75%"></div>
                                     </div>
                                 </div>
                             </div>
@@ -97,16 +89,26 @@
 
                         <!-- Counter item: Total Rooms -->
                         <div class="col-md-4">
-                            <div class="card card-body bg-primary bg-opacity-10 border border-primary border-opacity-25 p-4 h-100">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <!-- Digit -->
-                                    <div>
-                                        <h4 class="mb-0">${countRoom}</h4>
-                                        <span class="h6 fw-light mb-0">Total Rooms</span>
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body bg-primary bg-opacity-10 p-4">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <!-- Digit -->
+                                        <div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="bi bi-arrow-up-right text-success me-2"></i>
+                                                <small class="text-success fw-medium">+8% from last month</small>
+                                            </div>
+                                            <h2 class="mb-1 fw-bold text-white">${countRoom}</h2>
+                                            <span class="text-muted fw-medium">Total Rooms</span>
+                                        </div>
+                                        <!-- Icon -->
+                                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                            <i class="fa-solid fa-bed fa-fw text-white fs-4"></i>
+                                        </div>
                                     </div>
-                                    <!-- Icon -->
-                                    <div class="icon-lg rounded-circle bg-primary text-white mb-0">
-                                        <i class="fa-solid fa-bed fa-fw"></i>
+                                    <!-- Progress bar -->
+                                    <div class="progress mt-3" style="height: 4px;">
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 60%"></div>
                                     </div>
                                 </div>
                             </div>
@@ -114,16 +116,26 @@
 
                         <!-- Counter item: Total Users -->
                         <div class="col-md-4">
-                            <div class="card card-body bg-info bg-opacity-10 border border-info border-opacity-25 p-4 h-100">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <!-- Digit -->
-                                    <div>
-                                        <h4 class="mb-0">${countUser}</h4>
-                                        <span class="h6 fw-light mb-0">Total Users</span>
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body bg-info bg-opacity-10 p-4">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <!-- Digit -->
+                                        <div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="bi bi-arrow-up-right text-success me-2"></i>
+                                                <small class="text-success fw-medium">+15% from last month</small>
+                                            </div>
+                                            <h2 class="mb-1 fw-bold text-white">${countUser}</h2>
+                                            <span class="text-muted fw-medium">Total Users</span>
+                                        </div>
+                                        <!-- Icon -->
+                                        <div class="bg-info rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                            <i class="fa-solid fa-users fa-fw text-white fs-4"></i>
+                                        </div>
                                     </div>
-                                    <!-- Icon -->
-                                    <div class="icon-lg rounded-circle bg-info text-white mb-0">
-                                        <i class="fa-solid fa-users fa-fw"></i>
+                                    <!-- Progress bar -->
+                                    <div class="progress mt-3" style="height: 4px;">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 85%"></div>
                                     </div>
                                 </div>
                             </div>
@@ -131,15 +143,25 @@
                     </div>
                     <!-- Counter boxes END -->
 
-
-                    <!-- Hotel grid START -->
+                    <!-- Enhanced Hotel grid START -->
                     <div class="row g-4 mb-5">
                         <!-- Title -->
                         <div class="col-12">
-                            <div class="d-flex justify-content-between">
-                                <h4 class="mb-0">Popular Boarding Houses</h4>
-                                <a href="#" class="btn btn-primary-soft mb-0">View All</a>
-                            </div>  
+                            <div class="card bg-light border-0 p-4 mb-4">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h3 class="mb-1 fw-bold text-white">
+                                            <i class="bi bi-star-fill text-warning me-2"></i>
+                                            Popular Boarding Houses
+                                        </h3>
+                                        <p class="text-muted mb-0">Top performing properties based on ratings and bookings</p>
+                                    </div>
+                                    <a href="#" class="btn btn-primary btn-lg">
+                                        <i class="bi bi-eye me-2"></i>
+                                        View All
+                                    </a>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Duyệt danh sách BoardingHouse -->
@@ -148,62 +170,94 @@
                             <c:set var="averageRating" value="${entry.value}" />
 
                             <div class="col-lg-6">
-                                <div class="card shadow p-3">
-                                    <div class="row g-4">
-                                        <!-- Card img -->
-                                        <div class="col-md-3 position-relative">
-                                            <img src="${pageContext.request.contextPath}/assets/images/category/hotel/01.jpg" class="rounded-2" alt="House Image">
+                                <div class="card border-0 shadow-sm mb-4">
+                                    <div class="card-body p-4">
+                                        <div class="row g-4">
+                                            <!-- Card img -->
+                                            <div class="col-md-4 position-relative">
+                                                <div class="position-relative overflow-hidden rounded-3">
+                                                    <img src="${pageContext.request.contextPath}/assets/images/category/hotel/01.jpg" 
+                                                         class="img-fluid w-100" 
+                                                         style="height: 120px; object-fit: cover;" 
+                                                         alt="House Image">
 
-                                            <!-- Huy hiệu xếp hạng -->
-                                            <span class="badge position-absolute top-0 start-0 bg-warning text-dark fw-bold p-2">
-                                                Top ${status.index + 1}
-                                            </span>
-                                        </div>
+                                                    <!-- Ranking Badge -->
+                                                    <div class="position-absolute top-0 start-0 m-2">
+                                                        <span class="badge bg-warning text-white fw-bold px-3 py-2 rounded-pill">
+                                                            <i class="bi bi-trophy-fill me-1"></i>
+                                                            #${status.index + 1}
+                                                        </span>
+                                                    </div>
 
-                                        <!-- Card body -->
-                                        <div class="col-md-9">
-                                            <div class="card-body position-relative d-flex flex-column p-0 h-100">
-                                                <!-- Buttons -->
-                                                <div class="list-inline-item dropdown position-absolute top-0 end-0">
-                                                    <a href="#" class="btn btn-sm btn-round btn-light" role="button" data-bs-toggle="dropdown">
-                                                        <i class="bi bi-three-dots-vertical"></i>
-                                                    </a>
-                                                    <ul class="dropdown-menu dropdown-menu-end min-w-auto shadow">
-                                                        <li><a class="dropdown-item small" href="#"><i class="bi bi-info-circle me-2"></i>Report</a></li>
-                                                        <li><a class="dropdown-item small" href="#"><i class="bi bi-slash-circle me-2"></i>Disable</a></li>
-                                                    </ul>
+                                                    <!-- Rating Badge -->
+                                                    <div class="position-absolute bottom-0 end-0 m-2">
+                                                        <span class="badge bg-dark bg-opacity-75 text-white px-2 py-1 rounded-pill">
+                                                            <i class="bi bi-star-fill text-warning me-1"></i>
+                                                            <fmt:formatNumber value="${averageRating}" pattern="#.#" />
+                                                        </span>
+                                                    </div>
                                                 </div>
+                                            </div>
 
-                                                <!-- Title -->
-                                                <h5 class="card-title mb-0 me-5">
-                                                    <a href="house-detail.jsp?id=${house.id}">${house.name}</a>
-                                                </h5>
-                                                <small><i class="bi bi-geo-alt me-2"></i> ${house.address} </small>
+                                            <!-- Card body -->
+                                            <div class="col-md-8">
+                                                <div class="d-flex flex-column h-100">
+                                                    <!-- Action Dropdown -->
+                                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                                        <div class="flex-grow-1">
+                                                            <!-- Title -->
+                                                            <h5 class="card-title mb-1 fw-bold">
+                                                                <a href="house-detail.jsp?id=${house.id}" class="text-decoration-none text-white">
+                                                                    ${house.name}
+                                                                </a>
+                                                            </h5>
+                                                            <!-- Location -->
+                                                            <div class="d-flex align-items-center text-muted mb-2">
+                                                                <i class="bi bi-geo-alt-fill me-2 text-primary"></i>
+                                                                <small class="fw-medium">${house.address}</small>
+                                                            </div>
+                                                        </div>
 
-                                                <!-- Description -->
-                                                <p class="mt-2 text-secondary fs-6">
-                                                    ${house.description}
-                                                </p>
+                                                        <!-- Actions -->
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-light btn-sm rounded-pill" type="button" data-bs-toggle="dropdown">
+                                                                <i class="bi bi-three-dots-vertical"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                                                <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>View Details</a></li>
+                                                                <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Delete</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
 
-                                                <!-- Created At -->
-                                                <small class="text-muted fs-6">
-                                                    <i class="bi bi-calendar3 me-2"></i> 
-                                                    Created at: 
-                                                    <fmt:formatDate value="${house.createdAtDate}" pattern="dd/MM/yyyy HH:mm:ss" />
-                                                </small>
+                                                    <!-- Description -->
+                                                    <p class="text-muted mb-3 flex-grow-1" style="font-size: 0.9rem; line-height: 1.4;">
+                                                        ${house.description}
+                                                    </p>
 
-                                                <!-- Average Rating -->
-                                                <p class="text-warning mt-2">
-                                                    <i class="bi bi-star-fill"></i> 
-                                                    <fmt:formatNumber value="${averageRating}" pattern="#.##" />
-                                                </p>
+                                                    <!-- Metadata -->
+                                                    <div class="row g-2 mb-3">
+                                                        <div class="col-12">
+                                                            <small class="text-muted d-flex align-items-center">
+                                                                <i class="bi bi-calendar3 me-2 text-info"></i>
+                                                                Created: <fmt:formatDate value="${house.createdAtDate}" pattern="dd/MM/yyyy" />
+                                                            </small>
+                                                        </div>
+                                                    </div>
 
-                                                <!-- Price and Button -->
-                                                <div class="d-sm-flex justify-content-sm-between align-items-center mt-3 mt-md-auto">
-                                                    <div class="hstack gap-2 mt-3 mt-sm-0">
-                                                        <a href="#" class="btn btn-sm btn-primary-soft px-2 mb-0"><i class="bi bi-pencil-square fa-fw"></i></a>    
-                                                        <a href="#" class="btn btn-sm btn-danger-soft px-2 mb-0"><i class="bi bi-slash-circle fa-fw"></i></a>    
-                                                    </div>                  
+                                                    <!-- Action Buttons -->
+                                                    <div class="d-flex gap-2 mt-auto">
+                                                        <button class="btn btn-primary btn-sm flex-fill">
+                                                            <i class="bi bi-eye me-1"></i>
+                                                            View
+                                                        </button>
+                                                        <button class="btn btn-outline-primary btn-sm flex-fill">
+                                                            <i class="bi bi-pencil me-1"></i>
+                                                            Edit
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -214,55 +268,148 @@
                     </div>
                     <!-- Hotel grid END -->
 
-
-
-
-                    <!-- Widget START -->
+                    <!-- Enhanced Widget START -->
                     <div class="row g-4">
                         <!-- Reviews START -->
-                        <div class="col-lg-6 col-xxl-4">
-                            <div class="card shadow h-100">
+                        <div class="col-lg-8 col-xl-9">
+                            <div class="card border-0 shadow-sm">
                                 <!-- Card header -->
-                                <div class="card-header border-bottom d-flex justify-content-between align-items-center p-3">
-                                    <h5 class="card-header-title">Reviews</h5>
-                                    <a href="#" class="btn btn-link p-0 mb-0">View all</a>
+                                <div class="card-header bg-light border-bottom-0 p-4">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h4 class="card-title mb-1 fw-bold">
+                                                <i class="bi bi-chat-square-quote text-primary me-2"></i>
+                                                Recent Reviews
+                                            </h4>
+                                            <p class="text-muted mb-0">Latest customer feedback and ratings</p>
+                                        </div>
+                                        <a href="#" class="btn btn-primary">
+                                            <i class="bi bi-eye me-2"></i>
+                                            View All
+                                        </a>
+                                    </div>
                                 </div>
 
                                 <!-- Card body START -->
-                                <div class="card-body p-3">
-                                    <c:forEach var="review" items="${reviewList}">
+                                <div class="card-body">
+                                    <c:forEach var="review" items="${reviewList}" varStatus="reviewStatus">
                                         <!-- Review item START -->
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <!-- Info -->
-                                            <div class="ms-sm-3 mt-2 mt-sm-0">
-                                                <h6 class="mb-1">${review.user.username} - <span>${review.room.house.name}</span></h6>
-                                                <p class="mb-1">${review.comment}</p>
-                                                <small class="text-muted">Posted on: 
-                                                    <fmt:formatDate value="${review.createdAt}" pattern="dd/MM/yyyy HH:mm:ss" />
-                                                </small>
+                                        <div class="border-bottom pb-4 mb-4">
+                                            <div class="row g-3">
+                                                <!-- Avatar and User Info -->
+                                                <div class="col-auto">
+                                                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 50px; height: 50px;">
+                                                        ${review.user.username.substring(0,1).toUpperCase()}
+                                                    </div>
+                                                </div>
 
-                                                <!-- Rating -->
-                                                <ul class="list-inline smaller mb-0">
-                                                    <c:forEach begin="1" end="${review.rating}">
-                                                        <li class="list-inline-item me-0"><i class="fas fa-star text-warning"></i></li>
-                                                        </c:forEach>
-                                                        <c:forEach begin="${review.rating + 1}" end="5">
-                                                        <li class="list-inline-item me-0"><i class="far fa-star text-warning"></i></li>
-                                                        </c:forEach>
-                                                </ul>
+                                                <!-- Review Content -->
+                                                <div class="col">
+                                                    <!-- User and Property Info -->
+                                                    <div class="d-flex flex-wrap justify-content-between align-items-start mb-2">
+                                                        <div>
+                                                            <h6 class="mb-1 fw-bold text-white">${review.user.username}</h6>
+                                                            <small class="text-muted">
+                                                                <i class="bi bi-house me-1"></i>
+                                                                ${review.room.house.name}
+                                                            </small>
+                                                        </div>
+
+                                                        <!-- Rating -->
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="me-2">
+                                                                <c:forEach begin="1" end="${review.rating}">
+                                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                                </c:forEach>
+                                                                <c:forEach begin="${review.rating + 1}" end="5">
+                                                                    <i class="bi bi-star text-muted"></i>
+                                                                </c:forEach>
+                                                            </div>
+                                                            <span class="badge bg-primary rounded-pill">${review.rating}/5</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Review Comment -->
+                                                    <blockquote class="blockquote-footer mb-2">
+                                                        <p class="mb-2 text-white">"${review.comment}"</p>
+                                                    </blockquote>
+
+                                                    <!-- Review Date and Actions -->
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <small class="text-muted">
+                                                            <i class="bi bi-clock me-1"></i>
+                                                            <fmt:formatDate value="${review.createdAt}" pattern="dd/MM/yyyy HH:mm" />
+                                                        </small>
+
+                                                        <div class="btn-group btn-group-sm">
+                                                            <button class="btn btn-outline-primary btn-sm">
+                                                                <i class="bi bi-reply me-1"></i>
+                                                                Reply
+                                                            </button>
+                                                            <button class="btn btn-outline-secondary btn-sm">
+                                                                <i class="bi bi-three-dots"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <!-- Button -->
-                                            <a href="#" class="btn btn-sm btn-light flex-shrink-0 mb-0 ms-3">View</a>
                                         </div>
                                         <!-- Review item END -->
-                                        <hr> <!-- Divider -->
                                     </c:forEach>
+
+                                    <!-- Empty state if no reviews -->
+                                    <c:if test="${empty reviewList}">
+                                        <div class="text-center py-5">
+                                            <i class="bi bi-chat-square-quote display-1 text-muted mb-3"></i>
+                                            <h5 class="text-muted">No reviews yet</h5>
+                                            <p class="text-muted">Customer reviews will appear here once submitted.</p>
+                                        </div>
+                                    </c:if>
                                 </div>
                                 <!-- Card body END -->
-
                             </div>
                         </div>
                         <!-- Reviews END -->
+
+                        <!-- Quick Stats Sidebar -->
+                        <div class="col-lg-4 col-xl-3">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-light border-bottom-0 p-3">
+                                    <h5 class="card-title mb-0 fw-bold">
+                                        <i class="bi bi-graph-up text-success me-2"></i>
+                                        Quick Stats
+                                    </h5>
+                                </div>
+                                <div class="card-body p-3">
+                                    <!-- Occupancy Rate -->
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <small class="text-muted">Occupancy Rate</small>
+                                        <span class="fw-bold text-success">85%</span>
+                                    </div>
+                                    <div class="progress mb-4" style="height: 6px;">
+                                        <div class="progress-bar bg-success" style="width: 85%"></div>
+                                    </div>
+
+                                    <!-- Revenue This Month -->
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <small class="text-muted">Monthly Revenue</small>
+                                        <span class="fw-bold text-primary">$12,500</span>
+                                    </div>
+                                    <div class="progress mb-4" style="height: 6px;">
+                                        <div class="progress-bar bg-primary" style="width: 70%"></div>
+                                    </div>
+
+                                    <!-- Avg Rating -->
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <small class="text-muted">Average Rating</small>
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-star-fill text-warning me-1"></i>
+                                            <span class="fw-bold">4.2</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>	
                     <!-- Widget END -->
 

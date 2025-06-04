@@ -53,4 +53,8 @@ public class RoomService {
         return (int) roomRepository.count();
     }
 
+    public void saveAllRooms(List<Room> rooms) {
+        roomRepository.saveAll(rooms);
+    }
+
 }
