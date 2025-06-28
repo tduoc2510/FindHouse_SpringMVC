@@ -35,6 +35,10 @@ public class BookingRequestService {
         return bookingRequestRepository.findByRoom_House_Profile_Owner_Id(ownerId);
     }
 
+    public BookingRequest getBookingById(int id) {
+        return bookingRequestRepository.findById(id).orElse(null);
+    }
+
     public boolean updateBookingStatus(Integer requestId, String newStatus, String reason) {
         Optional<BookingRequest> optionalBooking = bookingRequestRepository.findById(requestId);
         if (optionalBooking.isPresent()) {
@@ -68,6 +72,10 @@ public class BookingRequestService {
 
     public List<BookingRequest> getBookingsByUser(User user) {
         return bookingRequestRepository.findByUser(user);
+    }
+
+    public List<BookingRequest> getPendingRequests() {
+        return bookingRequestRepository.findByStatus("pending");
     }
 
 }

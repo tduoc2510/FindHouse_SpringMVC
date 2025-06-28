@@ -157,9 +157,10 @@
                         <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">
                             <i class="bi bi-x-lg me-1"></i>Cancel
                         </button>
-                        <button type="submit" form="ownershipForm" class="btn btn-primary">
+                        <button type="submit" form="ownershipForm" class="btn btn-primary" id="submitOwnershipBtn">
                             <i class="bi bi-check-lg me-1"></i>Register Property
                         </button>
+
                     </div>
                 </div>
             </div>
@@ -210,7 +211,6 @@
         const requiredFields = this.querySelectorAll('[required]');
         let isValid = true;
 
-        // Ki?m tra required
         requiredFields.forEach(field => {
             if (!field.value.trim()) {
                 field.classList.add('is-invalid');
@@ -221,25 +221,33 @@
             }
         });
 
-        // ? Ki?m tra dung l??ng file PDF
+        // Ki?m tra dung l??ng PDF
         const landCert = document.getElementById('landCertificate').files[0];
         const ownership = document.getElementById('ownershipContract').files[0];
 
         if (landCert && landCert.size > MAX_FILE_SIZE_BYTES) {
-            alert("Land Certificate v??t quá 5MB.");
+            alert("Land Certificate over 5MB.");
             isValid = false;
         }
 
         if (ownership && ownership.size > MAX_FILE_SIZE_BYTES) {
-            alert("Ownership Contract v??t quá 5MB.");
+            alert("Ownership Contract over 5MB.");
             isValid = false;
         }
 
-        // N?u có l?i thì ch?n submit
         if (!isValid) {
             e.preventDefault();
+        } else {
+            // ? Ng?n double-submit
+            const submitBtn = document.getElementById('submitOwnershipBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Processing...
+        `;
         }
     });
+
 
     // Real-time validation
     document.querySelectorAll('input[required], textarea[required]').forEach(field => {

@@ -15,23 +15,27 @@
             <ul class="navbar-nav flex-column" id="navbar-sidebar">
                 <!-- Menu item -->
                 <li class="nav-item">
-                    <a href="${pageContext.request.contextPath}/user/profile" class="nav-link active d-flex align-items-center py-3">
+                    <a href="${pageContext.request.contextPath}/user/profile" class="nav-link  d-flex align-items-center py-3">
                         <i class="bi bi-speedometer2 me-3 fs-5"></i>
                         <span class="fw-medium">Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="${pageContext.request.contextPath}/user/ownerProfile/listing" class="nav-link active d-flex align-items-center py-3">
-                        <i class="bi bi-speedometer2 me-3 fs-5"></i>
-                        <span class="fw-medium">Listing</span>
+                    <a href="${pageContext.request.contextPath}/user/ownerProfile/listing?page=1&size=5"
+                       class="nav-link d-flex align-items-center py-3">
+                        <i class="bi bi-person-badge me-3 fs-5"></i>
+                        <span class="fw-medium">Manage Owner Profiles</span>
                     </a>
                 </li>
+
+
                 <li class="nav-item">
-                    <a href="${pageContext.request.contextPath}/user/profile" class="nav-link active d-flex align-items-center py-3">
-                        <i class="bi bi-speedometer2 me-3 fs-5"></i>
-                        <span class="fw-medium">Dashboard</span>
+                    <a href="${pageContext.request.contextPath}/booking/requests/pending" class="nav-link d-flex align-items-center py-3">
+                        <i class="bi bi-clock-history me-3 fs-5"></i>
+                        <span class="fw-medium">Pending Bookings</span>
                     </a>
                 </li>
+
             </ul>
             <!-- Sidebar menu end -->
 

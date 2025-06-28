@@ -26,6 +26,9 @@ import model.entity.Room;
 import model.entity.RoomImage;
 import model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,22 +63,35 @@ public class BoardingHouseController {
     private OwnerProfileRepository ownerProfileRepository;
 
     @GetMapping("/houseList")
-    public String getAllBoardingHouses(Model model) {
-        List<BoardingHouse> houses = boardingHouseService.getAllBoardingHouses();
+    public String getAllBoardingHouses(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size, // mỗi trang 6 nhà trọ
+            Model model
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<BoardingHouse> housePage = boardingHouseService.getApprovedBoardingHouses(pageable);
+        List<BoardingHouse> houses = housePage.getContent();
+
         Map<Integer, Map<String, Object>> houseRatings = new HashMap<>();
+        Map<Integer, List<RoomImage>> houseImages = new HashMap<>();
 
         for (BoardingHouse house : houses) {
             Map<String, Object> stats = boardingHouseService.getRatingStatsByHouseId(house.getId());
-
             Map<String, Object> ratingInfo = new HashMap<>();
             ratingInfo.put("average", stats.get("averageRating"));
             ratingInfo.put("total", stats.get("totalReviews"));
-
             houseRatings.put(house.getId(), ratingInfo);
+
+            List<RoomImage> images = roomImageService.getAllImagesFromBoardingHouse(house.getId());
+            houseImages.put(house.getId(), images);
         }
 
         model.addAttribute("houses", houses);
         model.addAttribute("houseRatings", houseRatings);
+        model.addAttribute("houseImages", houseImages);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", housePage.getTotalPages());
+
         return "house/list";
     }
 

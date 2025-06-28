@@ -6,6 +6,7 @@ import org.hibernate.annotations.Nationalized;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Date;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
@@ -95,6 +96,12 @@ public class Tenant {
         this.createdAt = createdAt;
     }
 
-    
+    public Date getRentStartAsDate() {
+        return rentStart != null ? java.sql.Date.valueOf(rentStart) : null;
+    }
+
+    public Date getRentEndAsDate() {
+        return rentEnd != null ? java.sql.Date.valueOf(rentEnd) : null;
+    }
 
 }

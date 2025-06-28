@@ -8,9 +8,11 @@ import controllers.service.BoardingHouseService;
 import controllers.service.BookingRequestService;
 import controllers.service.EmailService;
 import controllers.service.OwnerProfileService;
+import controllers.service.ReportService;
 import controllers.service.ReviewService;
 import controllers.service.RoomImageService;
 import controllers.service.RoomService;
+import controllers.service.TenantService;
 import controllers.service.UserService;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -23,10 +25,15 @@ import javax.servlet.http.HttpSession;
 import model.entity.BoardingHouse;
 import model.entity.BookingRequest;
 import model.entity.OwnerProfile;
+import model.entity.Report;
 import model.entity.Review;
 import model.entity.RoomImage;
+import model.entity.Tenant;
 import model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,10 +53,16 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private TenantService tenantService;
+
+    @Autowired
     private BookingRequestService bookingRequestService;
 
     @Autowired
     private BoardingHouseService boardingHouseService;
+    
+    @Autowired
+    private ReportService reportService;
 
     @Autowired
     private RoomService roomService;
@@ -187,21 +200,53 @@ public class UserController {
     }
 
     @GetMapping("/ownerProfile/listing")
-    public String getOwnerProfileListing(Model model, HttpSession session) {
-        // Kiểm tra quyền (nếu cần): ví dụ là admin hay moderator
+    public String listProfiles(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "12") int size,
+            Model model,
+            HttpSession session
+    ) {
         User currentUser = (User) session.getAttribute("USER");
-        if (currentUser == null || !currentUser.getRole().equals("admin")) {
-            return "redirect:/login"; // hoặc trả về lỗi 403 nếu cần
+        if (currentUser == null || !"admin".equals(currentUser.getRole())) {
+            return "redirect:/login";
         }
 
-        // Lấy toàn bộ OwnerProfile
-        List<OwnerProfile> ownerProfiles = ownerProfileService.getAllProfiles();
+        Pageable pageable = PageRequest.of(page - 1, size); // page - 1 vì Spring page 0-based
+        Page<OwnerProfile> profilePage = ownerProfileService.getPendingProfiles(pageable);
 
-        
-
-        model.addAttribute("ownerProfiles", ownerProfiles);
+        model.addAttribute("ownerProfiles", profilePage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", profilePage.getTotalPages());
+        model.addAttribute("totalElements", profilePage.getTotalElements());
+        model.addAttribute("pageSize", size);
 
         return "user/staffListing";
+    }
+
+    @GetMapping("/tenant")
+    public String getMyTenants(HttpSession session, Model model) {
+        User currentUser = (User) session.getAttribute("USER");
+
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        List<Tenant> myTenants = tenantService.getTenantsByUserId(currentUser.getId());
+
+        model.addAttribute("tenants", myTenants);
+        return "user/myTenants"; // Tạo trang JSP để hiển thị danh sách thuê trọ
+    }
+
+    @GetMapping("/reports")
+    public String viewOwnerReports(HttpSession session, Model model) {
+        User currentUser = (User) session.getAttribute("USER");
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        List<Report> ownerReports = reportService.getReportsByOwner(currentUser);
+        model.addAttribute("reports", ownerReports);
+        return "user/reports"; // Tạo file JSP tương ứng
     }
 
 }

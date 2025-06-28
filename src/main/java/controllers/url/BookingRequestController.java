@@ -10,17 +10,23 @@ package controllers.url;
  */
 import controllers.repository.RoomRepository;
 import controllers.service.BookingRequestService;
+import controllers.service.TenantService;
 import controllers.util.SessionUtil;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import model.entity.BookingRequest;
 import model.entity.Room;
+import model.entity.Tenant;
 import model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -30,7 +36,8 @@ public class BookingRequestController {
 
     @Autowired
     private BookingRequestService bookingRequestService;
-
+    @Autowired
+    private TenantService tenantService;
     @Autowired
     private RoomRepository roomRepository;
 
@@ -44,13 +51,31 @@ public class BookingRequestController {
 
         if (success) {
             int bookingId = Integer.parseInt(requestId);
+
+            // 1. Cập nhật trạng thái booking
             bookingRequestService.updateBookingStatus(bookingId, "confirm3", "Thanh toán thành công qua VNPAY");
+
+            // 2. Lấy thông tin booking
+            BookingRequest booking = bookingRequestService.getBookingById(bookingId);
+            if (booking != null) {
+                // 3. Tạo đối tượng Tenant
+                Tenant tenant = new Tenant();
+                tenant.setUser(booking.getUser());
+                tenant.setRoom(booking.getRoom());
+
+                // Ngày bắt đầu thuê là ngày thanh toán + 3 ngày
+                tenant.setRentStart(LocalDate.now().plusDays(3));
+
+                // Bạn có thể thêm logic tính rentEnd nếu cần
+                // 4. Lưu vào database
+                tenantService.saveTenant(tenant);
+            }
+
             redirectAttributes.addFlashAttribute("successMessage", "Thanh toán thành công!");
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "Thanh toán thất bại hoặc bị huỷ.");
         }
 
-        // Trả người dùng về trang danh sách đặt phòng
         return "redirect:/user/booking";
     }
 
@@ -96,4 +121,17 @@ public class BookingRequestController {
         redirectAttributes.addFlashAttribute("messageType", "success");
         return "redirect:/";
     }
+
+    @GetMapping("/requests/pending")
+    public String showPendingRequests(Model model, HttpSession session) {
+        User currentUser = (User) session.getAttribute("USER");
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        List<BookingRequest> pendingRequests = bookingRequestService.getPendingRequests();
+        model.addAttribute("requests", pendingRequests);
+        return "user/pendingBookingRequests"; // File JSP cần tạo
+    }
+
 }

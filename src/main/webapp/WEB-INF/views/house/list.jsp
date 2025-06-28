@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -84,13 +85,13 @@
                             <div class="vstack gap-4">
                                 <!-- Card item START -->
                                 <c:forEach items="${houses}" var="house" varStatus="status">
-                                    <div class="card shadow-sm border-0 h-100 position-relative overflow-hidden" style="transition: all 0.3s ease;">
+                                    <div class="card shadow-sm border-0 position-relative overflow-hidden card-fixed-height" style="height: 400px">
                                         <!-- Hover overlay -->
                                         <div class="position-absolute top-0 start-0 w-100 h-100 bg-primary opacity-0 transition-all" style="z-index: 1; pointer-events: none;"></div>
 
-                                        <div class="row g-0">
+                                        <div class="row g-0 h-100">
                                             <!-- Card img -->
-                                            <div class="col-md-5 position-relative">
+                                            <div class="col-md-5 position-relative" style="height: 100%;">
                                                 <!-- Status badge -->
                                                 <div class="position-absolute top-0 end-0 m-3" style="z-index: 3;">
                                                     <c:choose>
@@ -114,27 +115,33 @@
 
                                                 <!-- Image count badge -->
                                                 <div class="position-absolute bottom-0 start-0 m-3" style="z-index: 3;">
-                                                    <span class="badge bg-dark bg-opacity-75">
-                                                        <i class="bi bi-images me-1"></i>${(status.index % 5) + 5} ảnh
-                                                    </span>
+                                                    <c:choose>
+                                                        <c:when test="${fn:length(houseImages[house.id]) == 0}">
+                                                            <span class="badge bg-secondary bg-opacity-75">
+                                                                <i class="bi bi-image me-1"></i>Chưa có ảnh
+                                                            </span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="badge bg-dark bg-opacity-75">
+                                                                <i class="bi bi-images me-1"></i>${fn:length(houseImages[house.id])} ảnh
+                                                            </span>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </div>
 
                                                 <!-- Slider START -->
-                                                <div class="tiny-slider arrow-round arrow-xs arrow-dark overflow-hidden rounded-start h-100">
+                                                <div class="tiny-slider arrow-round arrow-xs arrow-dark overflow-hidden rounded-start" >
                                                     <div class="tiny-slider-inner h-100" data-autoplay="false" data-arrow="true" data-dots="false" data-items="1">
-                                                        <!-- Image items với placeholder đẹp hơn -->
-                                                        <div class="h-100">
-                                                            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=300&fit=crop&auto=format" 
-                                                                 alt="Card image" class="w-100 h-100" style="object-fit: cover;">
-                                                        </div>
-                                                        <div class="h-100">
-                                                            <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=400&h=300&fit=crop&auto=format" 
-                                                                 alt="Card image" class="w-100 h-100" style="object-fit: cover;">
-                                                        </div>
-                                                        <div class="h-100">
-                                                            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&h=300&fit=crop&auto=format" 
-                                                                 alt="Card image" class="w-100 h-100" style="object-fit: cover;">
-                                                        </div>
+                                                        <c:forEach var="image" items="${houseImages[house.id]}">
+                                                            <div >
+                                                                <img src="${image.imageUrl}" alt="Ảnh phòng" style="object-fit: cover;">
+                                                            </div>
+                                                        </c:forEach>
+                                                        <c:if test="${empty houseImages[house.id]}">
+                                                            <div >
+                                                                <img src="/images/no-image.jpg" alt="Không có ảnh"  style="object-fit: cover;">
+                                                            </div>
+                                                        </c:if>
                                                     </div>
                                                 </div>
                                                 <!-- Slider END -->
@@ -143,16 +150,13 @@
                                             <!-- Card body -->
                                             <div class="col-md-7">
                                                 <div class="card-body py-md-3 d-flex flex-column h-100 position-relative" style="z-index: 2;">
-
-                                                    <!-- Rating và Favorite -->
+                                                    <!-- Rating -->
                                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                                         <div class="d-flex align-items-center">
                                                             <c:set var="ratingInfo" value="${houseRatings[house.id]}" />
                                                             <c:set var="averageRating" value="${ratingInfo.average}" />
                                                             <c:set var="totalReviews" value="${ratingInfo.total}" />
-
                                                             <span class="badge bg-warning text-dark me-2 fw-bold">${averageRating}</span>
-
                                                             <div class="text-warning me-2">
                                                                 <c:forEach begin="1" end="5" var="i">
                                                                     <c:choose>
@@ -168,14 +172,10 @@
                                                                     </c:choose>
                                                                 </c:forEach>
                                                             </div>
-
                                                             <small class="text-muted">(${totalReviews} đánh giá)</small>
                                                         </div>
-
-                                                        <button class="btn btn-link p-0 text-secondary fs-5" onclick="toggleFavorite(this)">
-                                                            <i class="${status.index % 4 == 0 ? 'bi bi-heart-fill text-danger' : 'bi bi-heart'}"></i>
-                                                        </button>
                                                     </div>
+
                                                     <!-- Title -->
                                                     <h5 class="card-title mb-2">
                                                         <a href="/boarding-house/${house.id}" class="text-decoration-none text-white stretched-link">${house.name}</a>
@@ -196,19 +196,11 @@
                                                     <!-- Amenities -->
                                                     <div class="mb-3">
                                                         <div class="d-flex flex-wrap gap-1">
-                                                            <span class="badge bg-light text-dark border">
-                                                                <i class="bi bi-wifi me-1"></i>Wifi
-                                                            </span>
-                                                            <span class="badge bg-light text-dark border">
-                                                                <i class="bi bi-snow me-1"></i>Điều hòa
-                                                            </span>
-                                                            <span class="badge bg-light text-dark border">
-                                                                <i class="bi bi-house-door me-1"></i>Bếp
-                                                            </span>
+                                                            <span class="badge bg-light text-dark border"><i class="bi bi-wifi me-1"></i>Wifi</span>
+                                                            <span class="badge bg-light text-dark border"><i class="bi bi-snow me-1"></i>Điều hòa</span>
+                                                            <span class="badge bg-light text-dark border"><i class="bi bi-house-door me-1"></i>Bếp</span>
                                                             <c:if test="${status.index % 3 == 0}">
-                                                                <span class="badge bg-light text-dark border">
-                                                                    <i class="bi bi-car-front me-1"></i>Chỗ đậu xe
-                                                                </span>
+                                                                <span class="badge bg-light text-dark border"><i class="bi bi-car-front me-1"></i>Chỗ đậu xe</span>
                                                             </c:if>
                                                             <span class="badge bg-light text-primary border border-primary">+3</span>
                                                         </div>
@@ -235,11 +227,8 @@
                                                                         <small class="text-decoration-line-through text-muted ms-2">${((status.index % 3) + 2)}.${(status.index % 9) + 5} triệu</small>
                                                                     </c:if>
                                                                 </div>
-                                                                <small class="text-success">
-                                                                    <i class="bi bi-shield-check me-1"></i>Có thể đặt cọc online
-                                                                </small>
+                                                                <small class="text-success"><i class="bi bi-shield-check me-1"></i>Có thể đặt cọc online</small>
                                                             </div>
-
                                                             <div class="d-flex gap-2">
                                                                 <button class="btn btn-outline-primary btn-sm" onclick="event.preventDefault(); quickContact('${house.name}')">
                                                                     <i class="bi bi-telephone"></i>
@@ -258,30 +247,32 @@
                                 <!-- Card item END -->
 
                                 <!-- Pagination START -->
-                                <nav class="d-flex justify-content-center mt-4" aria-label="navigation">
-                                    <ul class="pagination pagination-primary-soft d-inline-block d-md-flex rounded mb-0">
-                                        <li class="page-item mb-0">
-                                            <a class="page-link" href="#" tabindex="-1">
-                                                <i class="fa-solid fa-angle-left"></i>
-                                                <span class="d-none d-sm-inline ms-1">Trước</span>
-                                            </a>
-                                        </li>
-                                        <li class="page-item mb-0"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item mb-0 active"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item mb-0"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item mb-0"><a class="page-link" href="#">..</a></li>
-                                        <li class="page-item mb-0"><a class="page-link" href="#">8</a></li>
-                                        <li class="page-item mb-0">
-                                            <a class="page-link" href="#">
-                                                <span class="d-none d-sm-inline me-1">Sau</span>
-                                                <i class="fa-solid fa-angle-right"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                <c:if test="${totalPages > 1}">
+                                    <nav class="d-flex justify-content-center mt-4" aria-label="navigation">
+                                        <ul class="pagination pagination-primary-soft d-inline-block d-md-flex rounded mb-0">
+                                            <li class="page-item mb-0 ${currentPage == 0 ? 'disabled' : ''}">
+                                                <a class="page-link" href="?page=${currentPage - 1}">
+                                                    <i class="fa-solid fa-angle-left"></i>
+                                                    <span class="d-none d-sm-inline ms-1">Trước</span>
+                                                </a>
+                                            </li>
+                                            <c:forEach begin="0" end="${totalPages - 1}" var="i">
+                                                <li class="page-item mb-0 ${i == currentPage ? 'active' : ''}">
+                                                    <a class="page-link" href="?page=${i}">${i + 1}</a>
+                                                </li>
+                                            </c:forEach>
+                                            <li class="page-item mb-0 ${currentPage + 1 == totalPages ? 'disabled' : ''}">
+                                                <a class="page-link" href="?page=${currentPage + 1}">
+                                                    <span class="d-none d-sm-inline me-1">Sau</span>
+                                                    <i class="fa-solid fa-angle-right"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </c:if>
                                 <!-- Pagination END -->
-
                             </div>
+
                         </div>
                         <!-- Main content END -->
                     </div> <!-- Row END -->

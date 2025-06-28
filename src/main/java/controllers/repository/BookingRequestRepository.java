@@ -25,4 +25,6 @@ public interface BookingRequestRepository extends JpaRepository<BookingRequest, 
 
     List<BookingRequest> findByUser(User user);
 
+    List<BookingRequest> findByStatus(String status);
+
 }

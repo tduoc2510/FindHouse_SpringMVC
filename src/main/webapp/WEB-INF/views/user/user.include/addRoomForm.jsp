@@ -208,9 +208,10 @@
                         <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">
                             <i class="bi bi-x-lg me-1"></i>Cancel
                         </button>
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit" id="submitRoomBtn" class="btn btn-success">
                             <i class="bi bi-check-lg me-1"></i>Add Room
                         </button>
+
                     </div>
                 </div>
             </div>
@@ -356,8 +357,17 @@
             if (firstInvalid) {
                 firstInvalid.focus();
             }
+        } else {
+            // ? Ng?n b?m nhi?u l?n
+            const submitBtn = document.getElementById('submitRoomBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Adding...
+        `;
         }
     });
+
 
     // Real-time validation on blur
     document.querySelectorAll('input[required], textarea[required], select[required]').forEach(field => {

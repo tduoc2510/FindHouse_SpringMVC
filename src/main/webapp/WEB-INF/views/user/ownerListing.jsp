@@ -186,12 +186,24 @@
 
                                                         <!-- Action Buttons -->
                                                         <div class="d-flex gap-2 mb-3">
-                                                            <button class="btn btn-primary btn-sm" 
-                                                                    data-bs-toggle="modal" 
-                                                                    data-bs-target="#addRoomModal" 
-                                                                    data-house-id="${house.id}">
-                                                                <i class="bi bi-plus-circle me-1"></i>Thêm phòng
-                                                            </button>
+                                                            <c:choose>
+                                                                <c:when test="${fn:length(house.rooms) lt house.maxRoomCount}">
+                                                                    <!-- Vẫn cho phép thêm phòng -->
+                                                                    <button class="btn btn-primary btn-sm" 
+                                                                            data-bs-toggle="modal" 
+                                                                            data-bs-target="#addRoomModal" 
+                                                                            data-house-id="${house.id}">
+                                                                        <i class="bi bi-plus-circle me-1"></i>Thêm phòng
+                                                                    </button>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <!-- Không cho thêm nữa -->
+                                                                    <button class="btn btn-outline-danger btn-sm" disabled>
+                                                                        <i class="bi bi-exclamation-triangle me-1"></i>Đã đủ số phòng
+                                                                    </button>
+                                                                </c:otherwise>
+                                                            </c:choose>
+
                                                             <button class="btn btn-outline-secondary btn-sm"
                                                                     type="button"
                                                                     data-bs-toggle="collapse"

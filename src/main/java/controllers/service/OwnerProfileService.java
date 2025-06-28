@@ -11,12 +11,15 @@ package controllers.service;
 import controllers.repository.OwnerProfileRepository;
 import controllers.repository.UserRepository;
 import java.util.List;
+import javax.transaction.Transactional;
 import model.entity.BoardingHouse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import model.entity.OwnerProfile;
 import model.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class OwnerProfileService {
@@ -75,8 +78,36 @@ public class OwnerProfileService {
         // Nếu từ chối thì lưu lý do
         if ("REJECTED".equals(status)) {
             profile.setReason(reason);
-        } 
+        }
 
         ownerProfileRepository.save(profile);
     }
+
+    public List<OwnerProfile> getProfilesByPage(int page, int size) {
+        int offset = (page - 1) * size;
+        return ownerProfileRepository.findProfilesWithPagination(offset, size);
+    }
+
+    public int countAllProfiles() {
+        return ownerProfileRepository.countProfiles();
+    }
+
+    public Page<OwnerProfile> getPendingProfiles(Pageable pageable) {
+        return ownerProfileRepository.findByApproved("PENDING", pageable);
+    }
+
+    @Transactional()
+    public Page<OwnerProfile> getAllWithDetails(Pageable pageable) {
+        Page<OwnerProfile> page = ownerProfileRepository.findAll(pageable);
+
+        // Lazy load rooms thủ công (tránh multiple bag fetch exception)
+        page.getContent().forEach(profile -> {
+            profile.getBoardingHouses().forEach(house -> {
+                house.getRooms().size(); // trigger lazy
+            });
+        });
+
+        return page;
+    }
+
 }

@@ -13,6 +13,8 @@ import java.util.List;
 import model.entity.BoardingHouse;
 import model.entity.Room;
 import model.entity.RoomImage;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -46,5 +48,9 @@ public interface BoardingHouseRepository extends JpaRepository<BoardingHouse, In
     List<Room> findByHouse_Id(@Param("houseId") int houseId);
 
     List<BoardingHouse> findByProfile_Id(int profileId);
+
+    List<BoardingHouse> findByProfileApproved(String approved);
+
+    Page<BoardingHouse> findByProfileApproved(String status, Pageable pageable);
 
 }

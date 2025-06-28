@@ -17,7 +17,7 @@ public class IndexController {
 
     @GetMapping({"/home", "/"}) // Mapping cho trang chính
     public String home(Model model, HttpSession session) {
-        List<BoardingHouse> houses = boardingHouseService.getAllBoardingHouses();
+        List<BoardingHouse> houses = boardingHouseService.getApprovedBoardingHouses();
         model.addAttribute("houses", houses); // Thêm danh sách căn hộ vào model
         return "index"; // Trả về trang index.jsp
     }

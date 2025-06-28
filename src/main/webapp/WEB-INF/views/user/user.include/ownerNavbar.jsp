@@ -31,6 +31,8 @@
                             <li class="nav-item"> <a class="nav-link active" href="${pageContext.request.contextPath}/user/profile"><i class="bi bi-house-door fa-fw me-1"></i>Dashboard</a>	</li>
 
                             <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/user/ownerListing"><i class="bi bi-journals fa-fw me-1"></i>Listings</a> </li>
+                            <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/user/reports"><i class="bi bi-journals fa-fw me-1"></i>Reports</a> </li>
+
 
                             <!--<li class="nav-item"> <a class="nav-link" href="agent-bookings.html"><i class="bi bi-bookmark-heart fa-fw me-1"></i>Bookings</a> </li>-->
 

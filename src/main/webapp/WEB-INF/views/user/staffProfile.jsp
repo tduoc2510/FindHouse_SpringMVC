@@ -338,7 +338,7 @@
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         <small class="text-muted">
                                                             <i class="bi bi-clock me-1"></i>
-                                                            <fmt:formatDate value="${review.createdAt}" pattern="dd/MM/yyyy HH:mm" />
+                                                            <fmt:formatDate value="${review.createdAtDate}" pattern="dd/MM/yyyy HH:mm" />
                                                         </small>
 
                                                         <div class="btn-group btn-group-sm">

@@ -140,42 +140,39 @@
                     <!-- Counter END -->
 
                     <!-- Tabs and search START -->
+                    <!-- Tabs Navigation -->
                     <div class="row g-4 justify-content-between align-items-center">
                         <div class="col-lg-5">
-                            <!-- Tabs -->
-                            <ul class="nav nav-pills-shadow nav-responsive">
+                            <ul class="nav nav-pills-shadow nav-responsive" id="profileTabs" role="tablist">
                                 <li class="nav-item"> 
-                                    <a class="nav-link mb-0 me-sm-2 active" data-bs-toggle="tab" href="#tab-all">Tất Cả Trạng Thái</a> 
+                                    <a class="nav-link mb-0 me-sm-2 active" id="tab-all-tab" data-bs-toggle="tab" href="#tab-all" role="tab">Tất Cả Trạng Thái</a> 
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link mb-0 me-sm-2" data-bs-toggle="tab" href="#tab-approved">Đã Duyệt</a>
+                                    <a class="nav-link mb-0 me-sm-2" id="tab-approved-tab" data-bs-toggle="tab" href="#tab-approved" role="tab">Đã Duyệt</a>
                                 </li>
                                 <li class="nav-item"> 
-                                    <a class="nav-link mb-0 me-sm-2" data-bs-toggle="tab" href="#tab-pending">Chờ Duyệt</a> 
+                                    <a class="nav-link mb-0 me-sm-2" id="tab-pending-tab" data-bs-toggle="tab" href="#tab-pending" role="tab">Chờ Duyệt</a> 
                                 </li>
                                 <li class="nav-item"> 
-                                    <a class="nav-link mb-0" data-bs-toggle="tab" href="#tab-rejected">Bị Từ Chối</a> 
+                                    <a class="nav-link mb-0" id="tab-rejected-tab" data-bs-toggle="tab" href="#tab-rejected" role="tab">Bị Từ Chối</a> 
                                 </li>
                             </ul>
                         </div>
-
-
                     </div>
-                    <!-- Tabs and search END -->
 
-                    <!-- Tab content START -->
+                    <!-- Tabs Content -->
                     <div class="tab-content mt-5" id="myTabContent">
-
-                        <!-- Grid view START -->
-                        <div class="tab-pane fade show active" id="grid-tab-pane">
-                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 g-4">
-                                <c:choose>
-                                    <c:when test="${not empty ownerProfiles}">
-                                        <c:forEach var="profile" items="${ownerProfiles}" varStatus="status">
+                        <c:forEach var="tab" items="${fn:split('ALL,APPROVED,PENDING,REJECTED', ',')}">
+                            <c:set var="tabId" value="tab-${fn:toLowerCase(tab)}" />
+                            <div class="tab-pane fade ${tab == 'ALL' ? 'show active' : ''}" id="${tabId}" role="tabpanel">
+                                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 g-4">
+                                    <c:set var="found" value="false" />
+                                    <c:forEach var="profile" items="${ownerProfiles}">
+                                        <c:if test="${tab == 'ALL' || profile.approved == tab}">
+                                            <c:set var="found" value="true" />
+                                            <!-- Card START -->
                                             <div class="col">
                                                 <div class="card shadow h-100">
-
-                                                    <!-- Header với trạng thái và menu -->
                                                     <div class="card-header bg-light p-3">
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <c:choose>
@@ -195,19 +192,12 @@
                                                                     </div>
                                                                 </c:otherwise>
                                                             </c:choose>
-
                                                             <div class="dropdown">
-                                                                <button class="btn btn-sm btn-outline-secondary border-0" type="button" 
-                                                                        id="dropdownAction${profile.id}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <button class="btn btn-sm btn-outline-secondary border-0" type="button" id="dropdownAction${profile.id}" data-bs-toggle="dropdown" aria-expanded="false">
                                                                     <i class="bi bi-three-dots-vertical"></i>
                                                                 </button>
                                                                 <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownAction${profile.id}">
-
-
-
-                                                                    <!-- Duyệt / Từ chối chỉ hiển thị nếu chưa duyệt -->
-                                                                    <c:if test="${profile.approved != 'APPROVED'}">
-                                                                        <!-- Duyệt: submit form -->
+                                                                    <c:if test="${profile.approved == 'PENDING'}">
                                                                         <li>
                                                                             <form method="post" action="${pageContext.request.contextPath}/boarding-house/updateApproval" class="d-inline">
                                                                                 <input type="hidden" name="profileId" value="${profile.id}" />
@@ -217,57 +207,22 @@
                                                                                 </button>
                                                                             </form>
                                                                         </li>
-
-                                                                        <!-- Từ chối: mở modal -->
                                                                         <li>
                                                                             <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#rejectModal${profile.id}">
                                                                                 <i class="bi bi-x-circle me-2"></i>Từ chối
                                                                             </button>
                                                                         </li>
                                                                     </c:if>
-
                                                                     <li><hr class="dropdown-divider" /></li>
-
-                                                                    <!-- Chỉnh sửa -->
                                                                     <li>
                                                                         <a class="dropdown-item text-warning" href="${pageContext.request.contextPath}/ownerProfile/edit/${profile.id}">
                                                                             <i class="bi bi-pencil me-2"></i>Chỉnh sửa
                                                                         </a>
                                                                     </li>
-
                                                                 </ul>
-
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="modal fade" id="rejectModal${profile.id}" tabindex="-1" aria-labelledby="rejectModalLabel${profile.id}" aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <form method="post" action="${pageContext.request.contextPath}/boarding-house/updateApproval">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header bg-danger text-white">
-                                                                        <h5 class="modal-title" id="rejectModalLabel${profile.id}">
-                                                                            <i class="bi bi-x-circle me-1"></i> Từ chối hồ sơ
-                                                                        </h5>
-                                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <input type="hidden" name="profileId" value="${profile.id}" />
-                                                                        <input type="hidden" name="status" value="REJECTED" />
-                                                                        <div class="mb-3">
-                                                                            <label class="form-label">Lý do từ chối</label>
-                                                                            <textarea name="reason" class="form-control" rows="4" required placeholder="Nhập lý do từ chối..."></textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                                        <button type="submit" class="btn btn-danger">Từ chối</button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Thông tin chính -->
                                                     <div class="card-body px-3">
                                                         <h5 class="card-title mb-1">
                                                             <c:out value="${profile.owner.fullName}" default="Chưa có tên"/>
@@ -276,7 +231,6 @@
                                                             <i class="bi bi-envelope me-1"></i>
                                                             <c:out value="${profile.owner.email}" default="Chưa có email"/>
                                                         </p>
-
                                                         <ul class="list-group list-group-borderless small mt-2 mb-0">
                                                             <li class="list-group-item pb-1 px-0">
                                                                 <i class="bi bi-card-text text-primary me-2"></i> 
@@ -309,8 +263,6 @@
                                                             </li>
                                                         </ul>
                                                     </div>
-
-                                                    <!-- Footer -->
                                                     <div class="card-footer bg-light pt-3">
                                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                                             <small class="text-muted">
@@ -328,36 +280,77 @@
                                                                 data-bs-toggle="modal" data-bs-target="#ownershipDetailModal${profile.id}">
                                                             <i class="bi bi-eye me-1"></i>Xem chi tiết
                                                         </button>
-
                                                     </div>
-
                                                 </div>
-                                            </div>
+                                            </div>  
                                             <%@include file="user.include/detailBoardingHouse.jsp" %>
-
-                                        </c:forEach>
-                                    </c:when>
-                                    <c:otherwise>
+                                            <!-- Card END -->
+                                        </c:if>
+                                    </c:forEach>
+                                    <c:if test="${not found}">
                                         <div class="col-12">
                                             <div class="text-center py-5">
                                                 <i class="bi bi-inbox display-1 text-muted"></i>
                                                 <h4 class="mt-3">Không có hồ sơ nào</h4>
-                                                <p class="text-muted">Chưa có hồ sơ chủ nhà nào trong hệ thống.</p>
+                                                <p class="text-muted">Chưa có hồ sơ chủ nhà phù hợp với trạng thái này.</p>
                                             </div>
                                         </div>
-                                    </c:otherwise>
-                                </c:choose>
-
+                                    </c:if>
+                                </div>
                             </div>
-                        </div>
-                        <!-- Grid view END -->
-
-
-
+                        </c:forEach>
                     </div>
                     <!-- Tab content END -->
 
                     <!-- Pagination START -->
+                    <c:if test="${totalPages > 1}">
+                        <div class="d-sm-flex justify-content-sm-between align-items-sm-center mt-4">
+                            <p class="mb-sm-0 text-center text-sm-start">
+                                Hiển thị từ 
+                                <strong>${(currentPage - 1) * pageSize + 1}</strong>
+                                đến 
+                                <strong>
+                                    <c:choose>
+                                        <c:when test="${currentPage * pageSize > totalElements}">
+                                            ${totalElements}
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${currentPage * pageSize}
+                                        </c:otherwise>
+                                    </c:choose>
+                                </strong>
+                                trong tổng số <strong>${totalElements}</strong> hồ sơ
+                            </p>
+
+                            <nav class="mb-sm-0 d-flex justify-content-center" aria-label="pagination">
+                                <ul class="pagination pagination-sm pagination-primary-soft mb-0">
+                                    <!-- Trang trước -->
+                                    <c:if test="${currentPage > 1}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=${currentPage - 1}&size=${pageSize}${param.search != null ? '&search=' += param.search : ''}">Trước</a>
+                                        </li>
+                                    </c:if>
+
+                                    <!-- Các số trang -->
+                                    <c:set var="start" value="${currentPage - 2 < 1 ? 1 : currentPage - 2}" />
+                                    <c:set var="end" value="${currentPage + 2 > totalPages ? totalPages : currentPage + 2}" />
+
+                                    <c:forEach begin="${start}" end="${end}" var="i">
+                                        <li class="page-item ${currentPage == i ? 'active' : ''}">
+                                            <a class="page-link" href="?page=${i}&size=${pageSize}${param.search != null ? '&search=' += param.search : ''}">${i}</a>
+                                        </li>
+                                    </c:forEach>
+
+                                    <!-- Trang sau -->
+                                    <c:if test="${currentPage < totalPages}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=${currentPage + 1}&size=${pageSize}${param.search != null ? '&search=' += param.search : ''}">Sau</a>
+                                        </li>
+                                    </c:if>
+                                </ul>
+                            </nav>
+                        </div>
+                    </c:if>
 
                     <!-- Pagination END -->
 

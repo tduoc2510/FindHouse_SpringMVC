@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 import model.entity.Review;
 import model.entity.Room;
 import model.entity.RoomImage;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class BoardingHouseService {
@@ -49,6 +51,10 @@ public class BoardingHouseService {
 
     public List<BoardingHouse> getAllBoardingHouses() {
         return boardingHouseRepository.findAll();
+    }
+
+    public List<BoardingHouse> getApprovedBoardingHouses() {
+        return boardingHouseRepository.findByProfileApproved("APPROVED");
     }
 
     public Optional<BoardingHouse> getBoardingHouseById(Integer id) {
@@ -181,6 +187,10 @@ public class BoardingHouseService {
 
     public List<BoardingHouse> getBoardingHousesByProfileId(int profileId) {
         return boardingHouseRepository.findByProfile_Id(profileId);
+    }
+
+    public Page<BoardingHouse> getApprovedBoardingHouses(Pageable pageable) {
+        return boardingHouseRepository.findByProfileApproved("APPROVED", pageable);
     }
 
 }
