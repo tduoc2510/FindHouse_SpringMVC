@@ -5,6 +5,7 @@
 package controllers.service;
 
 import controllers.repository.TenantRepository;
+import java.util.Date;
 import java.util.List;
 import model.entity.Tenant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,13 @@ public class TenantService {
 
     public List<Tenant> getTenantsByUserId(int userId) {
         return tenantRepository.findByUserId(userId);
+    }
+    public List<Tenant> getActiveTenants() {
+        return tenantRepository.findActiveTenants();
+    }
+
+    public List<Tenant> getTenantsFromDate(Date date) {
+        return tenantRepository.findTenantsFromDate(date);
     }
 
 }

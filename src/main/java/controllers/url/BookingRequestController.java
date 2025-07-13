@@ -62,11 +62,12 @@ public class BookingRequestController {
                 Tenant tenant = new Tenant();
                 tenant.setUser(booking.getUser());
                 tenant.setRoom(booking.getRoom());
+                tenant.setBookingRequest(booking); // ✅ Gán object, không phải ID
 
                 // Ngày bắt đầu thuê là ngày thanh toán + 3 ngày
                 tenant.setRentStart(LocalDate.now().plusDays(3));
 
-                // Bạn có thể thêm logic tính rentEnd nếu cần
+                // Bạn có thể set rentEnd ở đây nếu có thời hạn hợp đồng cụ thể
                 // 4. Lưu vào database
                 tenantService.saveTenant(tenant);
             }

@@ -9,6 +9,7 @@ package controllers.service;
  * @author Thanh Duoc
  */
 import controllers.repository.BoardingHouseRepository;
+import controllers.repository.OwnerProfileRepository;
 import controllers.repository.ReviewRepository;
 import controllers.repository.RoomImageRepository;
 import controllers.repository.RoomRepository;
@@ -44,6 +45,13 @@ public class BoardingHouseService {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private OwnerProfileRepository ownerProfileRepository;
+
+    public long countApprovedBoardingHouses() {
+        return ownerProfileRepository.countByApproved("approved");
+    }
 
     public List<RoomImage> getImageByRoomId(int roomId) {
         return roomImageRepository.findByRoom_Id(roomId);

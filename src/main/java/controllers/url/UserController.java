@@ -16,6 +16,7 @@ import controllers.service.TenantService;
 import controllers.service.UserService;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,7 +62,7 @@ public class UserController {
 
     @Autowired
     private BoardingHouseService boardingHouseService;
-    
+
     @Autowired
     private ReportService reportService;
 
@@ -249,4 +251,18 @@ public class UserController {
         return "user/reports"; // Tạo file JSP tương ứng
     }
 
+    @GetMapping("/tenants")
+    public String viewTenants(Model model) {
+        List<Tenant> tenants = tenantService.getActiveTenants();
+        model.addAttribute("tenants", tenants);
+        return "user/tenants"; // tên file JSP
+    }
+
+    @PostMapping("/tenants/filter")
+    public String filterTenants(@RequestParam("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
+            Model model) {
+        List<Tenant> tenants = tenantService.getTenantsFromDate(fromDate);
+        model.addAttribute("tenants", tenants);
+        return "user/tenants";
+    }
 }

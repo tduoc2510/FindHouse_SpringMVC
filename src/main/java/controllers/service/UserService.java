@@ -28,6 +28,10 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    public long countByRole(String role) {
+        return userRepository.countByRole(role);
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }

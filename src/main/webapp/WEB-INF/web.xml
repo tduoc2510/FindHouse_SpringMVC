@@ -17,12 +17,11 @@
 
         <!-- Cấu hình multipart cho servlet -->
         <multipart-config>
-            <location>/tmp</location>
+            <location>C:/Uploads/tmp</location>
             <max-file-size>10485760</max-file-size> <!-- 10MB -->
             <max-request-size>20971520</max-request-size> <!-- 20MB -->
             <file-size-threshold>0</file-size-threshold>
         </multipart-config>
-
     </servlet>
 
     <servlet-mapping>
@@ -67,6 +66,8 @@
         <exception-type>java.lang.Exception</exception-type>
         <location>/error500.jsp</location>
     </error-page>
+    
+
 
     <!-- Đăng ký filter tùy chỉnh -->
     <!--    <filter>

@@ -188,7 +188,6 @@
                                                         <div class="d-flex gap-2 mb-3">
                                                             <c:choose>
                                                                 <c:when test="${fn:length(house.rooms) lt house.maxRoomCount}">
-                                                                    <!-- Vẫn cho phép thêm phòng -->
                                                                     <button class="btn btn-primary btn-sm" 
                                                                             data-bs-toggle="modal" 
                                                                             data-bs-target="#addRoomModal" 
@@ -197,7 +196,6 @@
                                                                     </button>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                    <!-- Không cho thêm nữa -->
                                                                     <button class="btn btn-outline-danger btn-sm" disabled>
                                                                         <i class="bi bi-exclamation-triangle me-1"></i>Đã đủ số phòng
                                                                     </button>
@@ -210,7 +208,61 @@
                                                                     data-bs-target="#rooms-${house.id}">
                                                                 <i class="bi bi-list-ul me-1"></i>Xem phòng
                                                             </button>
+
+                                                            <!-- ✅ Nút Viết bài đăng -->
+                                                            <!-- Nút mở modal tạo bài đăng -->
+                                                            <button class="btn btn-outline-primary btn-sm"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#addPostModal-${house.id}">
+                                                                <i class="bi bi-pencil-square me-1"></i>Viết bài đăng
+                                                            </button>
+                                                            <!-- Modal tạo bài đăng -->
+                                                            <c:forEach var="house" items="${profile.boardingHouses}">
+                                                                <div class="modal fade" id="addPostModal-${house.id}" tabindex="-1" aria-labelledby="addPostModalLabel-${house.id}" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                                                        <div class="modal-content">
+                                                                            <form action="${pageContext.request.contextPath}/posts/save" method="post">
+                                                                                <div class="modal-header bg-primary text-white">
+                                                                                    <h5 class="modal-title" id="addPostModalLabel-${house.id}">
+                                                                                        <i class="bi bi-pencil-square me-2"></i> Tạo bài đăng mới cho: ${house.name}
+                                                                                    </h5>
+                                                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                                                </div>
+
+                                                                                <div class="modal-body">
+                                                                                    <input type="hidden" name="house.id" value="${house.id}" />
+
+                                                                                    <div class="mb-3">
+                                                                                        <label class="form-label">Tiêu đề</label>
+                                                                                        <input type="text" name="title" class="form-control" required />
+                                                                                    </div>
+
+                                                                                    <div class="mb-3">
+                                                                                        <label class="form-label">Nội dung</label>
+                                                                                        <textarea name="content" class="form-control" rows="5" required></textarea>
+                                                                                    </div>
+
+                                                                                    <div class="mb-3">
+                                                                                        <label class="form-label">Trạng thái</label>
+                                                                                        <select name="status" class="form-select">
+                                                                                            <option value="draft">Nháp</option>
+                                                                                            <option value="published">Công khai</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="modal-footer">
+                                                                                    <button type="submit" class="btn btn-success">Đăng bài</button>
+                                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </c:forEach>
+
                                                         </div>
+
 
                                                         <!-- Rooms List (Collapsible) -->
                                                         <div class="collapse" id="rooms-${house.id}">

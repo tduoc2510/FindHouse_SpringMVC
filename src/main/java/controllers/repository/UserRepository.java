@@ -25,4 +25,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     // Tìm user theo email
     User findByEmail(String email);
 
+    long countByRole(String role);
+
 }

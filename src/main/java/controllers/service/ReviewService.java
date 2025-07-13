@@ -23,6 +23,15 @@ public class ReviewService {
         return reviewRepository.findAll();
     }
 
+    public double getAverageRating() {
+        Double avg = reviewRepository.calculateAverageRating();
+        return avg != null ? avg : 0.0;
+    }
+
+    public int getTotalReviews() {
+        return (int) reviewRepository.count(); // hoặc dùng phương thức tùy chỉnh
+    }
+
     // Lấy danh sách đánh giá theo roomId
     public List<Review> getReviewsByRoomId(Integer roomId) {
         return reviewRepository.findByRoomId(roomId);

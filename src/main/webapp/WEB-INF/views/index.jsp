@@ -125,10 +125,10 @@ Hero Banner START -->
                                                         <i class="bi bi-star-fill"></i>
                                                         <i class="bi bi-star-fill"></i>
                                                     </div>
-                                                    <small class="text-muted">500+ đánh giá</small>
+                                                    <small class="text-muted">${totalReviews} đánh giá</small>
                                                 </div>
                                                 <div>
-                                                    <h6 class="mb-0 fw-bold">4.9</h6>
+                                                    <h6 class="mb-0 fw-bold">${averageRating}</h6>
                                                     <small class="text-muted">Tuyệt vời</small>
                                                 </div>
                                             </div>
@@ -160,42 +160,48 @@ Statistics START -->
             <section class="py-5 mb-4">
                 <div class="container">
                     <div class="row g-4 text-center">
+                        <!-- Tổng số nhà trọ -->
                         <div class="col-sm-6 col-lg-3">
                             <div class="card border-0 bg-light h-100">
                                 <div class="card-body p-4">
                                     <div class="icon-xl bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-3">
                                         <i class="bi bi-house-fill"></i>
                                     </div>
-                                    <h3 class="mb-1 text-primary">1000+</h3>
+                                    <h3 class="mb-1 text-primary">${totalHouses}+</h3>
                                     <p class="mb-0">Nhà trọ có sẵn</p>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Tổng số khách hàng (chủ trọ + người thuê) -->
                         <div class="col-sm-6 col-lg-3">
                             <div class="card border-0 bg-light h-100">
                                 <div class="card-body p-4">
                                     <div class="icon-xl bg-success bg-opacity-10 text-success rounded-circle mx-auto mb-3">
                                         <i class="bi bi-people-fill"></i>
                                     </div>
-                                    <h3 class="mb-1 text-success">5000+</h3>
+                                    <h3 class="mb-1 text-success">${totalOwners + totalTenants}+</h3>
                                     <p class="mb-0">Khách hàng hài lòng</p>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Trung bình đánh giá -->
                         <div class="col-sm-6 col-lg-3">
                             <div class="card border-0 bg-light h-100">
                                 <div class="card-body p-4">
                                     <div class="icon-xl bg-warning bg-opacity-10 text-warning rounded-circle mx-auto mb-3">
                                         <i class="bi bi-star-fill"></i>
                                     </div>
-                                    <h3 class="mb-1 text-warning">4.9</h3>
+                                    <h3 class="mb-1 text-warning">
+                                        ${averageRating}
+                                    </h3>
                                     <p class="mb-0">Đánh giá trung bình</p>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Hỗ trợ -->
                         <div class="col-sm-6 col-lg-3">
                             <div class="card border-0 bg-light h-100">
                                 <div class="card-body p-4">
@@ -210,6 +216,7 @@ Statistics START -->
                     </div>
                 </div>
             </section>
+
             <!-- =======================
 Statistics END -->
 

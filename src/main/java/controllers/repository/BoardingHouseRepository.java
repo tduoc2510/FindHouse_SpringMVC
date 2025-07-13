@@ -53,4 +53,6 @@ public interface BoardingHouseRepository extends JpaRepository<BoardingHouse, In
 
     Page<BoardingHouse> findByProfileApproved(String status, Pageable pageable);
 
+   
+
 }

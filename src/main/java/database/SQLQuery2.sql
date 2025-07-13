@@ -39,7 +39,7 @@ CREATE TABLE BoardingHouses (
     address NVARCHAR(255) NOT NULL,
     location GEOGRAPHY,
     description NVARCHAR(MAX),
-	max_room_count INT NOT NULL DEFAULT 1,
+    max_room_count INT NOT NULL DEFAULT 1,
     created_at DATETIME DEFAULT GETDATE(),
     updated_at DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (profile_id) REFERENCES OwnerProfiles(profile_id)

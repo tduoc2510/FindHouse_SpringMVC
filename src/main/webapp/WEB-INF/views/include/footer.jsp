@@ -16,13 +16,24 @@
                 <a >
                     <img style="height:150px" src="${pageContext.request.contextPath}/assets/images/logo.png" alt="logo">
                 </a>
-                <p class="my-3 text-body-secondary">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam
-                    eius consectetur ex! Perspiciatis magnam natus quisquam doloribus nemo quis reprehenderit eum
-                    neque impedit sed? Velit provident dolore unde optio maxime?</p>
-                <p class="mb-2"><a href="#" class="text-body-secondary text-primary-hover"><i
-                            class="bi bi-telephone me-2"></i>+1234 568 963</a> </p>
-                <p class="mb-0"><a href="#" class="text-body-secondary text-primary-hover"><i
-                            class="bi bi-envelope me-2"></i>example@gmail.com</a></p>
+                <p class="my-3 text-body-secondary">
+                    Debrent – nền tảng tìm thuê và quản lý nhà trọ thế hệ mới, kết nối trực tiếp giữa người tìm phòng và chủ trọ uy tín. 
+                    Chúng tôi giúp bạn tiết kiệm thời gian, an tâm lựa chọn, và trải nghiệm hành trình sống trọn vẹn trong không gian lý tưởng. 
+                    Dù là sinh viên, người đi làm hay chủ trọ đang tìm khách, Debrent luôn đồng hành cùng bạn – minh bạch, tiện lợi và hiện đại.
+                </p>
+
+                <p class="mb-2">
+                    <a href="tel:+84123456789" class="text-body-secondary text-primary-hover">
+                        <i class="bi bi-telephone me-2"></i>+84 123 456 789
+                    </a>
+                </p>
+                <p class="mb-0">
+                    <a href="mailto:support@debrent.vn" class="text-body-secondary text-primary-hover">
+                        <i class="bi bi-envelope me-2"></i>support@debrent.vn
+                    </a>
+                </p>
+
+
             </div>
             <!-- Widget 1 END -->
 

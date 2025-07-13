@@ -9,6 +9,7 @@ import controllers.service.BoardingHouseService;
 import controllers.service.EmailService;
 import controllers.service.FileStorageService;
 import controllers.service.OwnerProfileService;
+import controllers.service.PostService;
 import controllers.service.RoomImageService;
 import java.io.File;
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import model.entity.BoardingHouse;
 import model.entity.OwnerProfile;
+import model.entity.Post;
 import model.entity.Review;
 import model.entity.Room;
 import model.entity.RoomImage;
@@ -61,6 +63,8 @@ public class BoardingHouseController {
     private EmailService emailService;
     @Autowired
     private OwnerProfileRepository ownerProfileRepository;
+    @Autowired
+    private PostService postService;
 
     @GetMapping("/houseList")
     public String getAllBoardingHouses(
@@ -93,6 +97,32 @@ public class BoardingHouseController {
         model.addAttribute("totalPages", housePage.getTotalPages());
 
         return "house/list";
+    }
+
+    @GetMapping("/posts")
+    public String listAllPosts(Model model) {
+        List<Post> posts = postService.getAll(); // Mỗi Post đã có BoardingHouse
+
+        // Map houseId → List<RoomImage>
+        Map<Integer, List<RoomImage>> houseImages = new HashMap<>();
+
+        for (Post post : posts) {
+            BoardingHouse house = post.getHouse();
+            if (house != null && !houseImages.containsKey(house.getId())) {
+                List<RoomImage> images = roomImageService.getAllImagesFromBoardingHouse(house.getId());
+
+                System.out.println("🏠 House ID: " + house.getId() + " - Images count: " + images.size());
+                for (RoomImage img : images) {
+                    System.out.println("🖼️  Image URL: " + img.getImageUrl());
+                }
+
+                houseImages.put(house.getId(), images);
+            }
+        }
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("houseImages", houseImages); // Gửi ảnh xuống view
+        return "post/list_all";
     }
 
     @GetMapping("/{id}")

@@ -40,6 +40,18 @@ public class Tenant {
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "request_id")
+    private BookingRequest bookingRequest;
+
+    public BookingRequest getBookingRequest() {
+        return bookingRequest;
+    }
+
+    public void setBookingRequest(BookingRequest bookingRequest) {
+        this.bookingRequest = bookingRequest;
+    }
+
     public Integer getId() {
         return id;
     }

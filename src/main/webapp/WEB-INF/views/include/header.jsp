@@ -43,6 +43,10 @@
                         <a class="nav-link" href="${pageContext.request.contextPath}/boarding-house/houseList" id="listingMenu">
                             <i class="bi bi-building fa-fw me-2"></i>Danh sách phòng trọ
                         </a>
+                    </li><li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/boarding-house/posts" id="listingMenu">
+                            <i class="bi bi-newspaper fa-fw me-2"></i>Bài đăng
+                        </a>
                     </li>
                     <c:if test="${not empty USER && USER.role == 'owner'}">
                         <li class="nav-item">

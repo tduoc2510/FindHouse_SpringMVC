@@ -35,6 +35,12 @@
                         <span class="fw-medium">Pending Bookings</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="${pageContext.request.contextPath}/user/tenants" class="nav-link d-flex align-items-center py-3">
+                        <i class="bi bi-person-badge me-3 fs-5"></i>
+                        <span class="fw-medium">Rental History </span>
+                    </a>
+                </li>
 
             </ul>
             <!-- Sidebar menu end -->

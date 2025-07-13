@@ -42,4 +42,5 @@ public interface OwnerProfileRepository extends JpaRepository<OwnerProfile, Inte
 
     Page<OwnerProfile> findByApproved(String approved, Pageable pageable);
 
+    long countByApproved(String approved);
 }
