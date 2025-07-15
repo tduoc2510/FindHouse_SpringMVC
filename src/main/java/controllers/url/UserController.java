@@ -39,6 +39,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -78,6 +80,42 @@ public class UserController {
     private RoomImageService roomImageService;
     @Autowired
     private EmailService emailService;
+
+    @GetMapping("list")
+    public String listUsers(Model model) {
+        List<User> users = userService.getAllUsers();
+        model.addAttribute("users", users);
+        return "user/user-list";  // tên file JSP (user-list.jsp)
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editUserForm(@PathVariable int id, Model model) {
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
+        return "redirect:/user/list";
+    }
+
+    @PostMapping("/edit")
+    public String updateUser(@ModelAttribute User user) {
+        User existingUser = userService.getUserById(user.getId());
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            user.setPassword(existingUser.getPassword());
+        }
+        userService.saveUser(user);
+        return "redirect:/user/list";
+    }
+
+    @PostMapping("/add")
+    public String addUser(@ModelAttribute User user) {
+        userService.saveUser(user);
+        return "redirect:/user/list";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteUser(@PathVariable int id) {
+        userService.deleteUser(id);
+        return "redirect:/user/list";
+    }
 
     @GetMapping("/profile")
     public String home(Model model, HttpSession session) {

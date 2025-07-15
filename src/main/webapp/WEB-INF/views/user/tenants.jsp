@@ -286,7 +286,7 @@
                                                 <dd class="col-sm-7">
                                                     <c:choose>
                                                         <c:when test="${tenant.bookingRequest != null && tenant.bookingRequest.viewingDate != null}">
-                                                            <fmt:formatDate value="${tenant.bookingRequest.viewingDate}" pattern="dd/MM/yyyy HH:mm" />
+                                                            <fmt:formatDate value="${tenant.bookingRequest.viewingDateAsDate}" pattern="dd/MM/yyyy HH:mm" />
                                                         </c:when>
                                                         <c:otherwise>
                                                             <span class="text-muted">Không có lịch hẹn</span>
@@ -395,7 +395,8 @@
         </c:forEach>
 
         <!-- Bootstrap JS -->
-        <script src="../../../assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
         <script src="${pageContext.request.contextPath}/assets/js/functions.js"></script>
 
         <script>

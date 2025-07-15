@@ -108,22 +108,7 @@
                                                                     ${post.house.address}
                                                                 </p>
                                                             </div>
-                                                            <div class="dropdown">
-                                                                <button class="btn btn-link text-light p-1 opacity-75 rounded-circle" 
-                                                                        type="button" data-bs-toggle="dropdown"
-                                                                        style="width: 35px; height: 35px;">
-                                                                    <i class="bi bi-three-dots-vertical"></i>
-                                                                </button>
-                                                                <ul class="dropdown-menu dropdown-menu-dark bg-dark border-secondary shadow-lg">
-                                                                    <li><a class="dropdown-item text-light" href="${pageContext.request.contextPath}/posts/edit/${post.postId}">
-                                                                            <i class="bi bi-pencil-square me-2 text-info"></i>Chỉnh sửa
-                                                                        </a></li>
-                                                                    <li><hr class="dropdown-divider border-secondary"></li>
-                                                                    <li><a class="dropdown-item text-danger" href="#" onclick="deletePost(${post.postId})">
-                                                                            <i class="bi bi-trash3 me-2"></i>Xóa bài viết
-                                                                        </a></li>
-                                                                </ul>
-                                                            </div>
+                                                           
                                                         </div>
                                                     </header>
 
@@ -347,7 +332,7 @@
                                                                     <span class="d-none d-sm-inline">Chia sẻ</span>
                                                                 </button>
                                                             </div>
-                                                            <a href="${pageContext.request.contextPath}/posts/detail/${post.postId}" 
+                                                            <a href="${pageContext.request.contextPath}/boarding-house/${post.house.id}" 
                                                                class="btn btn-sm rounded-pill px-4 py-2 text-white fw-semibold" 
                                                                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                                                                border: none; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
